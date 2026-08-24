@@ -1,1 +1,124 @@
-(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[185],{9030:function(e,t,i){Promise.resolve().then(i.t.bind(i,7960,23)),Promise.resolve().then(i.bind(i,9835)),Promise.resolve().then(i.t.bind(i,2972,23))},1930:function(e,t,i){"use strict";i.d(t,{HJ:function(){return o},QP:function(){return a},R6:function(){return p},Uj:function(){return l},c3:function(){return r},it:function(){return g},mS:function(){return c}});let r="2026-06-27",o=["LSTO","BPSO","IPF"],a={Low:15e3,Medium:2e4,High:25e3},n={Low:6,Medium:14,High:28},u={EI:{Low:3,Medium:4,High:6},EO:{Low:4,Medium:5,High:7},EQ:{Low:3,Medium:4,High:6},ILF:{Low:7,Medium:10,High:15},EIF:{Low:5,Medium:7,High:10}};function c(e,t){return u[e][t]}function l(e){return a[e.complexity]*e.fp}let d={Open:{},DoR:{dateDoR:"2026-05-04"},DoD:{dateDoR:"2026-04-20",dateDoD:"2026-05-11"},Tested:{dateDoR:"2026-04-06",dateDoD:"2026-04-27",dateTested:"2026-05-18"},Deployed:{dateDoR:"2026-03-09",dateDoD:"2026-03-30",dateTested:"2026-04-13",dateDeployed:"2026-05-25"}};function s(e,t){return t.map((t,i)=>{let[r,o,n,u]=t,l=c(o,n);return{id:"".concat(e.toUpperCase(),"-").concat(String(i+1).padStart(3,"0")),appId:e,name:r,type:o,fp:l,complexity:n,status:u,...d[u],paid:"Deployed"===u,cost:a[n]*l}})}let p=[...s("aodb",[["1.1.0.1 - Flights - Schedule - Import","EI","High","Deployed"],["1.2.0.3 - Flights - Status - Update","EI","Medium","Deployed"],["1.4.1.0 - Stands - Allocation - View","EQ","Medium","Deployed"],["2.1.4.2 - Flights - Creation - Handler setting","EO","High","Tested"],["2.3.0.1 - Gates - Reassignment - Notify","EO","Medium","DoD"],["3.1.0.0 - Aircraft - Registry - File","ILF","High","DoR"],["3.2.0.1 - Turnaround - KPI - Report","EO","High","Open"],["4.0.1.2 - Weather - Feed - Interface","EIF","Medium","Open"]]),...s("ciss",[["1.1.0.1 - Passenger - Profile - Maintain","EI","Medium","Deployed"],["1.2.0.2 - Check-in - Status - Query","EQ","Low","Deployed"],["2.1.0.1 - Boarding - Pass - Generate","EO","High","Tested"],["2.2.0.3 - Seat - Map - Update","EI","Medium","DoR"],["3.0.0.1 - Loyalty - Account - File","ILF","Medium","Open"],["3.1.0.0 - Notifications - Email - Interface","EIF","Low","Open"]]),...s("ipf",[["1.1.0.1 - Assets - Register - Maintain","EI","Medium","Deployed"],["1.2.0.1 - Energy - Usage - Report","EO","Medium","Deployed"],["1.3.0.2 - Sensors - Reading - Import","EI","Low","Deployed"],["2.1.0.4 - Maintenance - Order - Create","EI","High","Tested"],["2.2.0.1 - Facilities - Booking - View","EQ","Low","DoD"],["3.0.0.1 - BIM - Model - File","ILF","High","DoR"],["3.1.0.0 - GIS - Layer - Interface","EIF","Medium","Open"],["3.2.0.2 - Compliance - Audit - Report","EO","Medium","Open"]]),...s("acro",[["1.1.0.1 - Shipment - Manifest - Import","EI","High","Deployed"],["1.2.0.1 - Customs - Status - Query","EQ","Medium","Tested"],["2.1.0.2 - Cargo - Booking - Create","EI","High","DoD"],["2.2.0.1 - Warehouse - Slot - Update","EI","Medium","Open"],["3.0.0.1 - Dangerous Goods - Registry - File","ILF","High","Open"]])],f=()=>({better:{green:80,amber:60},happier:{green:4,amber:3},cheaper:{green:18e3,amber:24e3,invert:!0},faster:{green:0,amber:-14}}),g=[{appId:"aodb",name:"AODB",fullName:"Airport Operational Database",orgUnit:"Airport Operations",owner:"Owner A (redacted)",contractType:"fp",ratePerHour:150,hoursToDate:320,expectedThroughput:20,weeksElapsed:16,baselineDeadline:"2026-06-18",budgetFactor:1.04,scopeFactor:.96,overview:{loc:125e3,complexityIndex:7.2,developers:12},better:{security:99,maintainability:95,reliability:96,efficiency:94,functionalSuitability:97,mtbf:50,mttr:2},happier:{team:4.2,collaboration:4,usage:3.9}},{appId:"ciss",name:"CiSS",fullName:"Central Information System",orgUnit:"Passenger Services",owner:"Owner A (redacted)",contractType:"hour",ratePerHour:165,hoursToDate:240,expectedThroughput:4,weeksElapsed:14,baselineDeadline:"2026-05-01",budgetFactor:.9,scopeFactor:1.06,overview:{loc:89e3,complexityIndex:8.5,developers:8},better:{security:50,maintainability:60,reliability:52,efficiency:58,functionalSuitability:55,mtbf:50,mttr:14},happier:{team:4.3,collaboration:4.1,usage:4.2}},{appId:"ipf",name:"IP&F",fullName:"Integrated Planning & Forecasting",orgUnit:"Infrastructure & Facilities",owner:"Owner B (redacted)",contractType:"fp",ratePerHour:145,hoursToDate:160,expectedThroughput:40,weeksElapsed:12,baselineDeadline:"2026-09-15",budgetFactor:1,scopeFactor:1,overview:{loc:156e3,complexityIndex:6.1,developers:15},better:{security:80,maintainability:75,reliability:78,efficiency:76,functionalSuitability:79,mtbf:30,mttr:6},happier:{team:3.6,collaboration:3.5,usage:3.4}},{appId:"acro",name:"ACRO",fullName:"ACRO",orgUnit:"Cargo & Logistics",owner:"Owner C (redacted)",contractType:"hour",ratePerHour:155,hoursToDate:230,expectedThroughput:5,weeksElapsed:14,baselineDeadline:"2026-08-20",budgetFactor:.86,scopeFactor:.9,overview:{loc:43e3,complexityIndex:9.3,developers:5},better:{security:40,maintainability:45,reliability:42,efficiency:44,functionalSuitability:43,mtbf:10,mttr:23},happier:{team:3.3,collaboration:3.1,usage:3}}].map(function(e){let t=p.filter(t=>t.appId===e.appId),i=t.reduce((e,t)=>e+t.fp,0),r=t.reduce((e,t)=>e+t.cost,0);return{appId:e.appId,name:e.name,fullName:e.fullName,orgUnit:e.orgUnit,qualityTarget:"A",owner:e.owner,contractType:e.contractType,fpMethod:"IFPUG",ratePerHour:e.ratePerHour,hoursToDate:e.hoursToDate,expectedThroughput:e.expectedThroughput,weeksElapsed:e.weeksElapsed,baselineBudget:1e3*Math.round(r*e.budgetFactor/1e3),baselineDeadline:e.baselineDeadline,baselineScopeFp:Math.round(i*e.scopeFactor),priceBook:{...a},outputTariff:a.High,effortHoursByComplexity:{...n},thresholds:f(),overview:e.overview,better:e.better,happier:e.happier}})},9835:function(e,t,i){"use strict";i.d(t,{StoreProvider:function(){return p},V:function(){return u},o:function(){return f}});var r=i(7437),o=i(2265),a=i(1930);let n="core4-state-v1",u="owner",c=(0,o.createContext)(null),l=0;function d(e){return l+=1,{id:"a".concat(Date.now(),"-").concat(l),timestamp:new Date().toISOString(),user:u,...e}}let s=()=>({rows:a.R6.map(e=>({...e})),configs:a.it.map(e=>({...e})),audit:[]});function p(e){let{children:t}=e,[i,u]=(0,o.useState)(s),[l,p]=(0,o.useState)(!1);(0,o.useEffect)(()=>{try{let e=localStorage.getItem(n);e&&u(JSON.parse(e))}catch(e){}p(!0)},[]),(0,o.useEffect)(()=>{if(l)try{localStorage.setItem(n,JSON.stringify(i))}catch(e){}},[i,l]);let f=(0,o.useCallback)((e,t)=>{u(i=>{let r=[],o=i.rows.map(i=>{if(i.id!==e)return i;let o={...i,...t};return(void 0!==t.type||void 0!==t.complexity)&&(o.fp=(0,a.mS)(o.type,o.complexity)),void 0===t.cost&&(void 0!==t.fp||void 0!==t.complexity||void 0!==t.type)&&(o.cost=(0,a.Uj)(o)),Object.keys(t).forEach(t=>{if(String(i[t])!==String(o[t])){var a,n;r.push(d({action:"update",target:e,field:String(t),oldValue:String(null!==(a=i[t])&&void 0!==a?a:""),newValue:String(null!==(n=o[t])&&void 0!==n?n:"")}))}}),o});return{...i,rows:o,audit:[...r,...i.audit]}})},[]),g=(0,o.useCallback)(e=>{u(t=>{let i=t.rows.filter(t=>t.appId===e).length+1,r="".concat(e.toUpperCase(),"-NEW-").concat(i),o={id:r,appId:e,name:"New function - describe…",type:"EI",fp:4,complexity:"Medium",status:"Open",paid:!1,cost:(0,a.Uj)({complexity:"Medium",fp:4})};return{...t,rows:[o,...t.rows],audit:[d({action:"create",target:r,note:"Row added"}),...t.audit]}})},[]),m=(0,o.useCallback)(e=>{u(t=>({...t,rows:t.rows.filter(t=>t.id!==e),audit:[d({action:"delete",target:e,note:"Row deleted"}),...t.audit]}))},[]),h=(0,o.useCallback)((e,t)=>{u(i=>({...i,rows:[...t,...i.rows.filter(t=>t.appId!==e)],audit:[d({action:"upload",target:"app:".concat(e),note:"Uploaded ".concat(t.length," rows (replaced sheet for ").concat(e.toUpperCase(),")")}),...i.audit]}))},[]),y=(0,o.useCallback)((e,t)=>{u(i=>{let r=[],o=i.configs.map(i=>{if(i.appId!==e)return i;let o={...i,...t};return Object.keys(t).forEach(t=>{let a=JSON.stringify(i[t]),n=JSON.stringify(o[t]);a!==n&&r.push(d({action:"config",target:"config:".concat(e),field:String(t),oldValue:a,newValue:n}))}),o});return{...i,configs:o,audit:[...r,...i.audit]}})},[]),b=(0,o.useCallback)(()=>u(s()),[]),w=(0,o.useMemo)(()=>({...i,ready:l,updateRow:f,addRow:g,deleteRow:m,uploadRows:h,updateConfig:y,reset:b}),[i,l,f,g,m,h,y,b]);return(0,r.jsx)(c.Provider,{value:w,children:t})}function f(){let e=(0,o.useContext)(c);if(!e)throw Error("useStore must be used within StoreProvider");return e}},7960:function(){}},function(e){e.O(0,[587,972,971,117,744],function(){return e(e.s=9030)}),_N_E=e.O()}]);
+(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[185],{9030:function(e,t,i){Promise.resolve().then(i.t.bind(i,7960,23)),Promise.resolve().then(i.bind(i,9835)),Promise.resolve().then(i.t.bind(i,2972,23))},1930:function(__mod__,t,__wr__){"use strict";__wr__.d(t,{CR:function(){return defaultChangeRules},CT:function(){return CHANGE_TYPES},HJ:function(){return LEVELS},PR:function(){return PERIODS},QP:function(){return PRICE_BOOK},R6:function(){return SEED_ROWS},Uj:function(){return rowCost},c3:function(){return TODAY},cf:function(){return changeFactor},it:function(){return SEED_CONFIGS},mS:function(){return fpWeight}});
+var TODAY="2026-06-27";
+var LEVELS=["LSTO","BPSO","IPF"];
+var PERIODS=["Last Month","Last Quarter","Last PI","YTD"];
+var PRICE_BOOK={Low:15e3,Medium:2e4,High:25e3};
+var EFFORT_HOURS={Low:6,Medium:14,High:28};
+var IFPUG_WEIGHTS={EI:{Low:3,Medium:4,High:6},EO:{Low:4,Medium:5,High:7},EQ:{Low:3,Medium:4,High:6},ILF:{Low:7,Medium:10,High:15},EIF:{Low:5,Medium:7,High:10}};
+var CHANGE_TYPES=["New","Changed","Deleted","Unchanged"];
+function num(v,d){var n=Number(v);return isFinite(n)?n:d}
+function defaultChangeRules(){return{newFactor:100,deletedFactor:20,unchangedFactor:0,changedTiers:[{upTo:25,factor:25},{upTo:50,factor:50},{upTo:75,factor:75},{upTo:100,factor:100}]}}
+function changeFactor(rules,changeType,changePct){
+var r=rules||defaultChangeRules();
+if("Deleted"===changeType)return num(r.deletedFactor,20)/100;
+if("Unchanged"===changeType)return num(r.unchangedFactor,0)/100;
+if("Changed"===changeType){
+var tiers=(r.changedTiers||[]).slice().sort(function(a,b){return num(a.upTo,0)-num(b.upTo,0)});
+if(!tiers.length)return 1;
+var pct=Math.max(0,Math.min(100,num(changePct,0)));
+for(var i=0;i<tiers.length;i++)if(pct<=num(tiers[i].upTo,100))return num(tiers[i].factor,100)/100;
+return num(tiers[tiers.length-1].factor,100)/100}
+return num(r.newFactor,100)/100}
+function fpWeight(type,complexity){return IFPUG_WEIGHTS[type][complexity]}
+function rowCost(row,config){
+var book=config&&config.priceBook?config.priceBook:PRICE_BOOK;
+var f=changeFactor(config&&config.changeRules,row.changeType,row.changePct);
+return Math.round(num(book[row.complexity],0)*num(row.fp,0)*f)}
+var STATUS_DATES={Open:{},DoR:{dateDoR:"2026-05-04"},DoD:{dateDoR:"2026-04-20",dateDoD:"2026-05-11"},Tested:{dateDoR:"2026-04-06",dateDoD:"2026-04-27",dateTested:"2026-05-18"},Deployed:{dateDoR:"2026-03-09",dateDoD:"2026-03-30",dateTested:"2026-04-13",dateDeployed:"2026-05-25"}};
+function seedRows(appId,list){return list.map(function(tuple,idx){
+var name=tuple[0],type=tuple[1],complexity=tuple[2],status=tuple[3];
+var changeType=tuple[4]||"New",changePct=void 0===tuple[5]?100:tuple[5];
+var fp=fpWeight(type,complexity);
+var row={id:appId.toUpperCase()+"-"+String(idx+1).padStart(3,"0"),appId:appId,name:name,type:type,fp:fp,complexity:complexity,status:status,changeType:changeType,changePct:changePct};
+Object.assign(row,STATUS_DATES[status]);
+row.paid="Deployed"===status;
+row.cost=Math.round(PRICE_BOOK[complexity]*fp*changeFactor(null,changeType,changePct));
+return row})}
+var SEED_ROWS=[].concat(
+seedRows("aodb",[["1.1.0.1 - Flights - Schedule - Import","EI","High","Deployed"],["1.2.0.3 - Flights - Status - Update","EI","Medium","Deployed"],["1.4.1.0 - Stands - Allocation - View","EQ","Medium","Deployed"],["2.1.4.2 - Flights - Creation - Handler setting","EO","High","Tested"],["2.3.0.1 - Gates - Reassignment - Notify","EO","Medium","DoD"],["3.1.0.0 - Aircraft - Registry - File","ILF","High","DoR"],["3.2.0.1 - Turnaround - KPI - Report","EO","High","Open","Changed",40],["4.0.1.2 - Weather - Feed - Interface","EIF","Medium","Open","Deleted",100]]),
+seedRows("ciss",[["1.1.0.1 - Passenger - Profile - Maintain","EI","Medium","Deployed"],["1.2.0.2 - Check-in - Status - Query","EQ","Low","Deployed"],["2.1.0.1 - Boarding - Pass - Generate","EO","High","Tested"],["2.2.0.3 - Seat - Map - Update","EI","Medium","DoR","Changed",60],["3.0.0.1 - Loyalty - Account - File","ILF","Medium","Open"],["3.1.0.0 - Notifications - Email - Interface","EIF","Low","Open"]]),
+seedRows("ipf",[["1.1.0.1 - Assets - Register - Maintain","EI","Medium","Deployed"],["1.2.0.1 - Energy - Usage - Report","EO","Medium","Deployed"],["1.3.0.2 - Sensors - Reading - Import","EI","Low","Deployed"],["2.1.0.4 - Maintenance - Order - Create","EI","High","Tested"],["2.2.0.1 - Facilities - Booking - View","EQ","Low","DoD"],["3.0.0.1 - BIM - Model - File","ILF","High","DoR"],["3.1.0.0 - GIS - Layer - Interface","EIF","Medium","Open"],["3.2.0.2 - Compliance - Audit - Report","EO","Medium","Open","Changed",30]]),
+seedRows("acro",[["1.1.0.1 - Shipment - Manifest - Import","EI","High","Deployed"],["1.2.0.1 - Customs - Status - Query","EQ","Medium","Tested"],["2.1.0.2 - Cargo - Booking - Create","EI","High","DoD"],["2.2.0.1 - Warehouse - Slot - Update","EI","Medium","Open","Deleted",100],["3.0.0.1 - Dangerous Goods - Registry - File","ILF","High","Open","Changed",70]]));
+function defaultThresholds(){return{better:{green:80,amber:60},happier:{green:4,amber:3},cheaper:{green:18e3,amber:24e3,invert:!0},faster:{green:0,amber:-14}}}
+var APPS=[
+{appId:"aodb",name:"AODB",fullName:"Airport Operational Database",orgUnit:"Airport Operations",owner:"Owner A (redacted)",contractType:"fp",ratePerHour:150,hoursToDate:320,expectedThroughput:20,weeksElapsed:16,baselineDeadline:"2026-06-18",budgetFactor:1.04,scopeFactor:.96,overview:{loc:125e3,complexityIndex:7.2,developers:12},better:{security:99,maintainability:95,reliability:96,efficiency:94,functionalSuitability:97,mtbf:50,mttr:2},happier:{team:4.2,collaboration:4,usage:3.9},history:{"Last Month":{better:3,happier:.1,slackDays:2,spendShare:.1},"Last Quarter":{better:6,happier:.2,slackDays:4,spendShare:.28},"Last PI":{better:8,happier:.3,slackDays:5,spendShare:.36},YTD:{better:12,happier:.5,slackDays:8,spendShare:.66}}},
+{appId:"ciss",name:"CiSS",fullName:"Central Information System",orgUnit:"Passenger Services",owner:"Owner A (redacted)",contractType:"hour",ratePerHour:165,hoursToDate:240,expectedThroughput:4,weeksElapsed:14,baselineDeadline:"2026-05-01",budgetFactor:.9,scopeFactor:1.06,overview:{loc:89e3,complexityIndex:8.5,developers:8},better:{security:50,maintainability:60,reliability:52,efficiency:58,functionalSuitability:55,mtbf:50,mttr:14},happier:{team:4.3,collaboration:4.1,usage:4.2},history:{"Last Month":{better:-4,happier:.1,slackDays:-3,spendShare:.12},"Last Quarter":{better:-9,happier:0,slackDays:-8,spendShare:.31},"Last PI":{better:-11,happier:.1,slackDays:-11,spendShare:.4},YTD:{better:-16,happier:.2,slackDays:-18,spendShare:.7}}},
+{appId:"ipf",name:"IP&F",fullName:"Integrated Planning & Forecasting",orgUnit:"Infrastructure & Facilities",owner:"Owner B (redacted)",contractType:"fp",ratePerHour:145,hoursToDate:160,expectedThroughput:40,weeksElapsed:12,baselineDeadline:"2026-09-15",budgetFactor:1,scopeFactor:1,overview:{loc:156e3,complexityIndex:6.1,developers:15},better:{security:80,maintainability:75,reliability:78,efficiency:76,functionalSuitability:79,mtbf:30,mttr:6},happier:{team:3.6,collaboration:3.5,usage:3.4},history:{"Last Month":{better:1,happier:-.1,slackDays:0,spendShare:.08},"Last Quarter":{better:2,happier:-.2,slackDays:-1,spendShare:.22},"Last PI":{better:3,happier:-.2,slackDays:-2,spendShare:.3},YTD:{better:5,happier:-.4,slackDays:-3,spendShare:.58}}},
+{appId:"acro",name:"ACRO",fullName:"ACRO",orgUnit:"Cargo & Logistics",owner:"Owner C (redacted)",contractType:"hour",ratePerHour:155,hoursToDate:230,expectedThroughput:5,weeksElapsed:14,baselineDeadline:"2026-08-20",budgetFactor:.86,scopeFactor:.9,overview:{loc:43e3,complexityIndex:9.3,developers:5},better:{security:40,maintainability:45,reliability:42,efficiency:44,functionalSuitability:43,mtbf:10,mttr:23},happier:{team:3.3,collaboration:3.1,usage:3},history:{"Last Month":{better:-5,happier:-.2,slackDays:-4,spendShare:.14},"Last Quarter":{better:-11,happier:-.4,slackDays:-9,spendShare:.35},"Last PI":{better:-14,happier:-.5,slackDays:-12,spendShare:.44},YTD:{better:-20,happier:-.8,slackDays:-20,spendShare:.75}}}];
+var SEED_CONFIGS=APPS.map(function(app){
+var rows=SEED_ROWS.filter(function(r){return r.appId===app.appId});
+var fp=rows.filter(function(r){return"Deleted"!==r.changeType}).reduce(function(a,r){return a+r.fp},0);
+var cost=rows.reduce(function(a,r){return a+r.cost},0);
+return{appId:app.appId,name:app.name,fullName:app.fullName,orgUnit:app.orgUnit,qualityTarget:"A",owner:app.owner,contractType:app.contractType,fpMethod:"IFPUG",ratePerHour:app.ratePerHour,hoursToDate:app.hoursToDate,expectedThroughput:app.expectedThroughput,weeksElapsed:app.weeksElapsed,baselineBudget:1e3*Math.round(cost*app.budgetFactor/1e3),baselineDeadline:app.baselineDeadline,baselineScopeFp:Math.round(fp*app.scopeFactor),priceBook:Object.assign({},PRICE_BOOK),outputTariff:PRICE_BOOK.High,effortHoursByComplexity:Object.assign({},EFFORT_HOURS),changeRules:defaultChangeRules(),thresholds:defaultThresholds(),history:app.history,overview:app.overview,better:app.better,happier:app.happier}})},9835:function(__mod__,t,__wr__){"use strict";__wr__.d(t,{StoreProvider:function(){return StoreProvider},V:function(){return CURRENT_USER},o:function(){return useStore}});var jsx=__wr__(7437),React=__wr__(2265),D=__wr__(1930);
+var STORAGE_KEY="core4-state-v2";
+var CURRENT_USER="owner";
+var Ctx=(0,React.createContext)(null);
+var seq=0;
+function entry(fields){seq+=1;return Object.assign({id:"a"+Date.now()+"-"+seq,timestamp:new Date().toISOString(),user:CURRENT_USER},fields)}
+var initialState=function(){return{rows:D.R6.map(function(r){return Object.assign({},r)}),configs:D.it.map(function(c){return Object.assign({},c)}),audit:[]}};
+var FUNCTIONAL_FIELDS=["name","type","complexity"];
+function normalise(row){
+if(void 0===row.changeType)row.changeType="New";
+if(void 0===row.changePct)row.changePct="Changed"===row.changeType?50:100;
+return row}
+function StoreProvider(props){
+var children=props.children;
+var stateTuple=(0,React.useState)(initialState),state=stateTuple[0],setState=stateTuple[1];
+var readyTuple=(0,React.useState)(!1),ready=readyTuple[0],setReady=readyTuple[1];
+(0,React.useEffect)(function(){try{var saved=localStorage.getItem(STORAGE_KEY);saved&&setState(JSON.parse(saved))}catch(e){}setReady(!0)},[]);
+(0,React.useEffect)(function(){if(ready)try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){}},[state,ready]);
+var updateRow=(0,React.useCallback)(function(id,patch){
+setState(function(prev){
+var log=[];
+var rows=prev.rows.map(function(row){
+if(row.id!==id)return row;
+var config=prev.configs.find(function(c){return c.appId===row.appId});
+var next=normalise(Object.assign({},row,patch));
+if(void 0!==patch.type||void 0!==patch.complexity)next.fp=D.mS(next.type,next.complexity);
+if(void 0===patch.changeType&&"Deployed"===row.status&&("New"===row.changeType||"Unchanged"===row.changeType)&&FUNCTIONAL_FIELDS.some(function(f){return void 0!==patch[f]&&String(patch[f])!==String(row[f])})){next.changeType="Changed";if(void 0===patch.changePct&&(void 0===row.changePct||100===row.changePct))next.changePct=50}
+if(void 0===patch.cost&&(void 0!==patch.fp||void 0!==patch.complexity||void 0!==patch.type||next.changeType!==row.changeType||next.changePct!==row.changePct))next.cost=D.Uj(next,config);
+Object.keys(next).forEach(function(field){
+if(String(void 0===row[field]?"":row[field])!==String(void 0===next[field]?"":next[field]))log.push(entry({action:"update",target:id,field:String(field),oldValue:String(void 0===row[field]?"":row[field]),newValue:String(void 0===next[field]?"":next[field])}))});
+return next});
+return Object.assign({},prev,{rows:rows,audit:log.concat(prev.audit)})})},[]);
+var addRow=(0,React.useCallback)(function(appId){
+setState(function(prev){
+var config=prev.configs.find(function(c){return c.appId===appId});
+var n=prev.rows.filter(function(r){return r.appId===appId}).length+1;
+var id=appId.toUpperCase()+"-NEW-"+n;
+var row={id:id,appId:appId,name:"New function - describe…",type:"EI",fp:4,complexity:"Medium",status:"Open",changeType:"New",changePct:100,paid:!1};
+row.cost=D.Uj(row,config);
+return Object.assign({},prev,{rows:[row].concat(prev.rows),audit:[entry({action:"create",target:id,note:"Row added (change type New, factor "+Math.round(100*D.cf(config&&config.changeRules,"New",100))+"%)"})].concat(prev.audit)})})},[]);
+var deleteRow=(0,React.useCallback)(function(id){
+setState(function(prev){return Object.assign({},prev,{rows:prev.rows.filter(function(r){return r.id!==id}),audit:[entry({action:"delete",target:id,note:"Row deleted"})].concat(prev.audit)})})},[]);
+var uploadRows=(0,React.useCallback)(function(appId,incoming){
+setState(function(prev){
+var config=prev.configs.find(function(c){return c.appId===appId});
+var rows=incoming.map(function(r){var row=normalise(Object.assign({},r));if(void 0===r.cost)row.cost=D.Uj(row,config);return row});
+return Object.assign({},prev,{rows:rows.concat(prev.rows.filter(function(r){return r.appId!==appId})),audit:[entry({action:"upload",target:"app:"+appId,note:"Uploaded "+rows.length+" rows (replaced sheet for "+appId.toUpperCase()+")"})].concat(prev.audit)})})},[]);
+var recalcCosts=(0,React.useCallback)(function(appId){
+setState(function(prev){
+var config=prev.configs.find(function(c){return c.appId===appId});
+var changed=0;
+var rows=prev.rows.map(function(row){
+if(row.appId!==appId)return row;
+var cost=D.Uj(row,config);
+if(cost===row.cost)return row;
+changed+=1;
+return Object.assign({},row,{cost:cost})});
+return Object.assign({},prev,{rows:rows,audit:[entry({action:"recalc",target:"app:"+appId,note:"Recalculated cost from change rules for "+changed+" function(s)"})].concat(prev.audit)})})},[]);
+var updateConfig=(0,React.useCallback)(function(appId,patch){
+setState(function(prev){
+var log=[];
+var configs=prev.configs.map(function(config){
+if(config.appId!==appId)return config;
+var next=Object.assign({},config,patch);
+Object.keys(patch).forEach(function(field){
+var before=JSON.stringify(config[field]),after=JSON.stringify(next[field]);
+before!==after&&log.push(entry({action:"config",target:"config:"+appId,field:String(field),oldValue:before,newValue:after}))});
+return next});
+return Object.assign({},prev,{configs:configs,audit:log.concat(prev.audit)})})},[]);
+var reset=(0,React.useCallback)(function(){setState(initialState())},[]);
+var value=(0,React.useMemo)(function(){return Object.assign({},state,{ready:ready,updateRow:updateRow,addRow:addRow,deleteRow:deleteRow,uploadRows:uploadRows,recalcCosts:recalcCosts,updateConfig:updateConfig,reset:reset})},[state,ready,updateRow,addRow,deleteRow,uploadRows,recalcCosts,updateConfig,reset]);
+return(0,jsx.jsx)(Ctx.Provider,{value:value,children:children})}
+function useStore(){var ctx=(0,React.useContext)(Ctx);if(!ctx)throw Error("useStore must be used within StoreProvider");return ctx}},7960:function(){}},function(e){e.O(0,[587,972,971,117,744],function(){return e(e.s=9030)}),_N_E=e.O()}]);

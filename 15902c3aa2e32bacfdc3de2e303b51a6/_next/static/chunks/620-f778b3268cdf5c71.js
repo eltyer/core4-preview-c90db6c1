@@ -1,1 +1,168 @@
-"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[620],{2369:function(e,t,r){r.d(t,{G$:function(){return l},I:function(){return u},M1:function(){return d},W$:function(){return i},b9:function(){return n},qN:function(){return p},s7:function(){return c},wq:function(){return o}});var a=r(1930);function o(e,t){let{green:r,amber:a,invert:o}=t;return o?e<=r?"good":e<=a?"warn":"bad":e>=r?"good":e>=a?"warn":"bad"}function i(e,t){var r,o;let i,n;let u=t.filter(t=>t.appId===e.appId),c=u.filter(e=>"Deployed"===e.status),d=u.filter(e=>"Deployed"!==e.status),l=u.reduce((e,t)=>e+t.fp,0),p=c.reduce((e,t)=>e+t.fp,0),s=d.reduce((e,t)=>e+t.fp,0),f=e.weeksElapsed>0?p/e.weeksElapsed:0,g=p>0?e.hoursToDate/p:0,h=(f+e.expectedThroughput)/2||e.expectedThroughput,m=(r=a.c3,o=h>0?s/h:999,new Date(Date.parse(r)+7*o*864e5).toISOString().slice(0,10)),y=Math.round((Date.parse(e.baselineDeadline)-Date.parse(m))/864e5);"fp"===e.contractType?(i=c.reduce((e,t)=>e+t.cost,0),n=d.reduce((e,t)=>e+t.cost,0)):(i=e.hoursToDate*e.ratePerHour,n=d.reduce((t,r)=>t+e.effortHoursByComplexity[r.complexity]*e.ratePerHour,0));let b=i+n,D=p>0?i/p:0,w=e.baselineBudget-b,I=Math.round((e.better.security+e.better.maintainability+e.better.reliability+e.better.efficiency+e.better.functionalSuitability)/5),S=Math.round((e.happier.team+e.happier.collaboration+e.happier.usage)/3*10)/10;return{totalFp:l,deliveredFp:p,remainingFp:s,throughput:Math.round(10*f)/10,deliverySpeed:Math.round(2*f*10)/10,productivity:Math.round(10*g)/10,forecastDate:m,forecastSlackDays:y,actuals:i,etc:n,eac:b,costPerFp:Math.round(D),vacCost:w,vacTimeDays:y,scopeEac:l,scopeGrowth:l-e.baselineScopeFp,betterScore:I,happierScore:S}}function n(e){return e>=90?"A":e>=80?"B":e>=70?"C":e>=60?"D":"E"}function u(e){var t;return null!==(t=({A:5,B:4,C:3,D:2,E:1})[e])&&void 0!==t?t:0}function c(e){return Math.abs(e)>=1e6?"€".concat((e/1e6).toFixed(2),"M"):Math.abs(e)>=1e3?"€".concat((e/1e3).toFixed(0),"K"):"€".concat(e.toFixed(0))}function d(e){return"€".concat(Math.round(e).toLocaleString("en-US"))}function l(e){return new Date(Date.parse(e)).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"})}function p(e){let t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"";return"".concat(e>0?"+":"").concat(e.toLocaleString("en-US")).concat(t)}},1930:function(e,t,r){r.d(t,{HJ:function(){return o},QP:function(){return i},R6:function(){return s},Uj:function(){return d},c3:function(){return a},it:function(){return g},mS:function(){return c}});let a="2026-06-27",o=["LSTO","BPSO","IPF"],i={Low:15e3,Medium:2e4,High:25e3},n={Low:6,Medium:14,High:28},u={EI:{Low:3,Medium:4,High:6},EO:{Low:4,Medium:5,High:7},EQ:{Low:3,Medium:4,High:6},ILF:{Low:7,Medium:10,High:15},EIF:{Low:5,Medium:7,High:10}};function c(e,t){return u[e][t]}function d(e){return i[e.complexity]*e.fp}let l={Open:{},DoR:{dateDoR:"2026-05-04"},DoD:{dateDoR:"2026-04-20",dateDoD:"2026-05-11"},Tested:{dateDoR:"2026-04-06",dateDoD:"2026-04-27",dateTested:"2026-05-18"},Deployed:{dateDoR:"2026-03-09",dateDoD:"2026-03-30",dateTested:"2026-04-13",dateDeployed:"2026-05-25"}};function p(e,t){return t.map((t,r)=>{let[a,o,n,u]=t,d=c(o,n);return{id:"".concat(e.toUpperCase(),"-").concat(String(r+1).padStart(3,"0")),appId:e,name:a,type:o,fp:d,complexity:n,status:u,...l[u],paid:"Deployed"===u,cost:i[n]*d}})}let s=[...p("aodb",[["1.1.0.1 - Flights - Schedule - Import","EI","High","Deployed"],["1.2.0.3 - Flights - Status - Update","EI","Medium","Deployed"],["1.4.1.0 - Stands - Allocation - View","EQ","Medium","Deployed"],["2.1.4.2 - Flights - Creation - Handler setting","EO","High","Tested"],["2.3.0.1 - Gates - Reassignment - Notify","EO","Medium","DoD"],["3.1.0.0 - Aircraft - Registry - File","ILF","High","DoR"],["3.2.0.1 - Turnaround - KPI - Report","EO","High","Open"],["4.0.1.2 - Weather - Feed - Interface","EIF","Medium","Open"]]),...p("ciss",[["1.1.0.1 - Passenger - Profile - Maintain","EI","Medium","Deployed"],["1.2.0.2 - Check-in - Status - Query","EQ","Low","Deployed"],["2.1.0.1 - Boarding - Pass - Generate","EO","High","Tested"],["2.2.0.3 - Seat - Map - Update","EI","Medium","DoR"],["3.0.0.1 - Loyalty - Account - File","ILF","Medium","Open"],["3.1.0.0 - Notifications - Email - Interface","EIF","Low","Open"]]),...p("ipf",[["1.1.0.1 - Assets - Register - Maintain","EI","Medium","Deployed"],["1.2.0.1 - Energy - Usage - Report","EO","Medium","Deployed"],["1.3.0.2 - Sensors - Reading - Import","EI","Low","Deployed"],["2.1.0.4 - Maintenance - Order - Create","EI","High","Tested"],["2.2.0.1 - Facilities - Booking - View","EQ","Low","DoD"],["3.0.0.1 - BIM - Model - File","ILF","High","DoR"],["3.1.0.0 - GIS - Layer - Interface","EIF","Medium","Open"],["3.2.0.2 - Compliance - Audit - Report","EO","Medium","Open"]]),...p("acro",[["1.1.0.1 - Shipment - Manifest - Import","EI","High","Deployed"],["1.2.0.1 - Customs - Status - Query","EQ","Medium","Tested"],["2.1.0.2 - Cargo - Booking - Create","EI","High","DoD"],["2.2.0.1 - Warehouse - Slot - Update","EI","Medium","Open"],["3.0.0.1 - Dangerous Goods - Registry - File","ILF","High","Open"]])],f=()=>({better:{green:80,amber:60},happier:{green:4,amber:3},cheaper:{green:18e3,amber:24e3,invert:!0},faster:{green:0,amber:-14}}),g=[{appId:"aodb",name:"AODB",fullName:"Airport Operational Database",orgUnit:"Airport Operations",owner:"Owner A (redacted)",contractType:"fp",ratePerHour:150,hoursToDate:320,expectedThroughput:20,weeksElapsed:16,baselineDeadline:"2026-06-18",budgetFactor:1.04,scopeFactor:.96,overview:{loc:125e3,complexityIndex:7.2,developers:12},better:{security:99,maintainability:95,reliability:96,efficiency:94,functionalSuitability:97,mtbf:50,mttr:2},happier:{team:4.2,collaboration:4,usage:3.9}},{appId:"ciss",name:"CiSS",fullName:"Central Information System",orgUnit:"Passenger Services",owner:"Owner A (redacted)",contractType:"hour",ratePerHour:165,hoursToDate:240,expectedThroughput:4,weeksElapsed:14,baselineDeadline:"2026-05-01",budgetFactor:.9,scopeFactor:1.06,overview:{loc:89e3,complexityIndex:8.5,developers:8},better:{security:50,maintainability:60,reliability:52,efficiency:58,functionalSuitability:55,mtbf:50,mttr:14},happier:{team:4.3,collaboration:4.1,usage:4.2}},{appId:"ipf",name:"IP&F",fullName:"Integrated Planning & Forecasting",orgUnit:"Infrastructure & Facilities",owner:"Owner B (redacted)",contractType:"fp",ratePerHour:145,hoursToDate:160,expectedThroughput:40,weeksElapsed:12,baselineDeadline:"2026-09-15",budgetFactor:1,scopeFactor:1,overview:{loc:156e3,complexityIndex:6.1,developers:15},better:{security:80,maintainability:75,reliability:78,efficiency:76,functionalSuitability:79,mtbf:30,mttr:6},happier:{team:3.6,collaboration:3.5,usage:3.4}},{appId:"acro",name:"ACRO",fullName:"ACRO",orgUnit:"Cargo & Logistics",owner:"Owner C (redacted)",contractType:"hour",ratePerHour:155,hoursToDate:230,expectedThroughput:5,weeksElapsed:14,baselineDeadline:"2026-08-20",budgetFactor:.86,scopeFactor:.9,overview:{loc:43e3,complexityIndex:9.3,developers:5},better:{security:40,maintainability:45,reliability:42,efficiency:44,functionalSuitability:43,mtbf:10,mttr:23},happier:{team:3.3,collaboration:3.1,usage:3}}].map(function(e){let t=s.filter(t=>t.appId===e.appId),r=t.reduce((e,t)=>e+t.fp,0),a=t.reduce((e,t)=>e+t.cost,0);return{appId:e.appId,name:e.name,fullName:e.fullName,orgUnit:e.orgUnit,qualityTarget:"A",owner:e.owner,contractType:e.contractType,fpMethod:"IFPUG",ratePerHour:e.ratePerHour,hoursToDate:e.hoursToDate,expectedThroughput:e.expectedThroughput,weeksElapsed:e.weeksElapsed,baselineBudget:1e3*Math.round(a*e.budgetFactor/1e3),baselineDeadline:e.baselineDeadline,baselineScopeFp:Math.round(r*e.scopeFactor),priceBook:{...i},outputTariff:i.High,effortHoursByComplexity:{...n},thresholds:f(),overview:e.overview,better:e.better,happier:e.happier}})},9835:function(e,t,r){r.d(t,{StoreProvider:function(){return s},V:function(){return u},o:function(){return f}});var a=r(7437),o=r(2265),i=r(1930);let n="core4-state-v1",u="owner",c=(0,o.createContext)(null),d=0;function l(e){return d+=1,{id:"a".concat(Date.now(),"-").concat(d),timestamp:new Date().toISOString(),user:u,...e}}let p=()=>({rows:i.R6.map(e=>({...e})),configs:i.it.map(e=>({...e})),audit:[]});function s(e){let{children:t}=e,[r,u]=(0,o.useState)(p),[d,s]=(0,o.useState)(!1);(0,o.useEffect)(()=>{try{let e=localStorage.getItem(n);e&&u(JSON.parse(e))}catch(e){}s(!0)},[]),(0,o.useEffect)(()=>{if(d)try{localStorage.setItem(n,JSON.stringify(r))}catch(e){}},[r,d]);let f=(0,o.useCallback)((e,t)=>{u(r=>{let a=[],o=r.rows.map(r=>{if(r.id!==e)return r;let o={...r,...t};return(void 0!==t.type||void 0!==t.complexity)&&(o.fp=(0,i.mS)(o.type,o.complexity)),void 0===t.cost&&(void 0!==t.fp||void 0!==t.complexity||void 0!==t.type)&&(o.cost=(0,i.Uj)(o)),Object.keys(t).forEach(t=>{if(String(r[t])!==String(o[t])){var i,n;a.push(l({action:"update",target:e,field:String(t),oldValue:String(null!==(i=r[t])&&void 0!==i?i:""),newValue:String(null!==(n=o[t])&&void 0!==n?n:"")}))}}),o});return{...r,rows:o,audit:[...a,...r.audit]}})},[]),g=(0,o.useCallback)(e=>{u(t=>{let r=t.rows.filter(t=>t.appId===e).length+1,a="".concat(e.toUpperCase(),"-NEW-").concat(r),o={id:a,appId:e,name:"New function - describe…",type:"EI",fp:4,complexity:"Medium",status:"Open",paid:!1,cost:(0,i.Uj)({complexity:"Medium",fp:4})};return{...t,rows:[o,...t.rows],audit:[l({action:"create",target:a,note:"Row added"}),...t.audit]}})},[]),h=(0,o.useCallback)(e=>{u(t=>({...t,rows:t.rows.filter(t=>t.id!==e),audit:[l({action:"delete",target:e,note:"Row deleted"}),...t.audit]}))},[]),m=(0,o.useCallback)((e,t)=>{u(r=>({...r,rows:[...t,...r.rows.filter(t=>t.appId!==e)],audit:[l({action:"upload",target:"app:".concat(e),note:"Uploaded ".concat(t.length," rows (replaced sheet for ").concat(e.toUpperCase(),")")}),...r.audit]}))},[]),y=(0,o.useCallback)((e,t)=>{u(r=>{let a=[],o=r.configs.map(r=>{if(r.appId!==e)return r;let o={...r,...t};return Object.keys(t).forEach(t=>{let i=JSON.stringify(r[t]),n=JSON.stringify(o[t]);i!==n&&a.push(l({action:"config",target:"config:".concat(e),field:String(t),oldValue:i,newValue:n}))}),o});return{...r,configs:o,audit:[...a,...r.audit]}})},[]),b=(0,o.useCallback)(()=>u(p()),[]),D=(0,o.useMemo)(()=>({...r,ready:d,updateRow:f,addRow:g,deleteRow:h,uploadRows:m,updateConfig:y,reset:b}),[r,d,f,g,h,m,y,b]);return(0,a.jsx)(c.Provider,{value:D,children:t})}function f(){let e=(0,o.useContext)(c);if(!e)throw Error("useStore must be used within StoreProvider");return e}}}]);
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[620],{2369:function(__mod__,t,__wr__){__wr__.d(t,{G$:function(){return fmtDate},I:function(){return gradeRank},M1:function(){return euroFull},W$:function(){return derive},b9:function(){return grade},gF:function(){return gradeFloor},hy:function(){return historyFor},pP:function(){return signedPct},qN:function(){return signed},s7:function(){return euro},sd:function(){return signedFixed},wq:function(){return rag}});var D=__wr__(1930);
+var DAY=864e5;
+var GRADE_FLOOR={A:90,B:80,C:70,D:60,E:0};
+var EMPTY_HISTORY={better:0,happier:0,slackDays:0,spendShare:0};
+function rag(value,threshold){var green=threshold.green,amber=threshold.amber;return threshold.invert?value<=green?"good":value<=amber?"warn":"bad":value>=green?"good":value>=amber?"warn":"bad"}
+function grade(score){return score>=90?"A":score>=80?"B":score>=70?"C":score>=60?"D":"E"}
+function gradeRank(g){var r={A:5,B:4,C:3,D:2,E:1}[g];return void 0===r?0:r}
+function gradeFloor(g){var f=GRADE_FLOOR[g];return void 0===f?90:f}
+function historyFor(config,period){var h=config&&config.history&&config.history[period];return h||EMPTY_HISTORY}
+function euro(v){return Math.abs(v)>=1e6?"€"+(v/1e6).toFixed(2)+"M":Math.abs(v)>=1e3?"€"+(v/1e3).toFixed(0)+"K":"€"+v.toFixed(0)}
+function euroFull(v){return"€"+Math.round(v).toLocaleString("en-US")}
+function fmtDate(v){return new Date(Date.parse(v)).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"})}
+function signed(v){var suffix=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"";return(v>0?"+":"")+v.toLocaleString("en-US")+suffix}
+function signedFixed(v,digits){var suffix=arguments.length>2&&void 0!==arguments[2]?arguments[2]:"";return(v>0?"+":"")+v.toFixed(digits)+suffix}
+function signedPct(value,base){var b=Math.abs(base);if(!isFinite(b)||0===b)return"n/a";var p=Math.round(value/b*100);return(p>0?"+":"")+p+"%"}
+function derive(config,allRows){
+var rows=allRows.filter(function(r){return r.appId===config.appId});
+var live=rows.filter(function(r){return"Deleted"!==r.changeType});
+var deleted=rows.filter(function(r){return"Deleted"===r.changeType});
+var liveDone=live.filter(function(r){return"Deployed"===r.status});
+var liveOpen=live.filter(function(r){return"Deployed"!==r.status});
+var sumFp=function(list){return list.reduce(function(a,r){return a+r.fp},0)};
+var totalFp=sumFp(live),deliveredFp=sumFp(liveDone),remainingFp=sumFp(liveOpen),deletedFp=sumFp(deleted);
+var throughput=config.weeksElapsed>0?deliveredFp/config.weeksElapsed:0;
+var productivity=deliveredFp>0?config.hoursToDate/deliveredFp:0;
+var runRate=(throughput+config.expectedThroughput)/2||config.expectedThroughput;
+var weeksLeft=runRate>0?remainingFp/runRate:999;
+var forecastDate=new Date(Date.parse(D.c3)+7*weeksLeft*DAY).toISOString().slice(0,10);
+var forecastSlackDays=Math.round((Date.parse(config.baselineDeadline)-Date.parse(forecastDate))/DAY);
+var plannedDays=Math.max(1,Math.round((Date.parse(config.baselineDeadline)-(Date.parse(D.c3)-config.weeksElapsed*7*DAY))/DAY));
+var costDone=rows.filter(function(r){return"Deployed"===r.status});
+var costOpen=rows.filter(function(r){return"Deployed"!==r.status});
+var actuals,etc;
+if("fp"===config.contractType){
+actuals=costDone.reduce(function(a,r){return a+r.cost},0);
+etc=costOpen.reduce(function(a,r){return a+r.cost},0)}
+else{
+actuals=config.hoursToDate*config.ratePerHour;
+etc=costOpen.reduce(function(a,r){return a+config.effortHoursByComplexity[r.complexity]*config.ratePerHour*D.cf(config.changeRules,r.changeType,r.changePct)},0)}
+var eac=actuals+etc;
+var costPerFp=deliveredFp>0?actuals/deliveredFp:0;
+var vacCost=config.baselineBudget-eac;
+var betterScore=Math.round((config.better.security+config.better.maintainability+config.better.reliability+config.better.efficiency+config.better.functionalSuitability)/5);
+var happierScore=Math.round((config.happier.team+config.happier.collaboration+config.happier.usage)/3*10)/10;
+return{totalFp:totalFp,deliveredFp:deliveredFp,remainingFp:remainingFp,deletedFp:deletedFp,throughput:Math.round(10*throughput)/10,deliverySpeed:Math.round(2*throughput*10)/10,productivity:Math.round(10*productivity)/10,forecastDate:forecastDate,forecastSlackDays:forecastSlackDays,plannedDays:plannedDays,actuals:actuals,etc:etc,eac:eac,costPerFp:Math.round(costPerFp),vacCost:vacCost,vacTimeDays:forecastSlackDays,scopeEac:totalFp,scopeGrowth:totalFp-config.baselineScopeFp,betterScore:betterScore,happierScore:happierScore}}},1930:function(__mod__,t,__wr__){__wr__.d(t,{CR:function(){return defaultChangeRules},CT:function(){return CHANGE_TYPES},HJ:function(){return LEVELS},PR:function(){return PERIODS},QP:function(){return PRICE_BOOK},R6:function(){return SEED_ROWS},Uj:function(){return rowCost},c3:function(){return TODAY},cf:function(){return changeFactor},it:function(){return SEED_CONFIGS},mS:function(){return fpWeight}});
+var TODAY="2026-06-27";
+var LEVELS=["LSTO","BPSO","IPF"];
+var PERIODS=["Last Month","Last Quarter","Last PI","YTD"];
+var PRICE_BOOK={Low:15e3,Medium:2e4,High:25e3};
+var EFFORT_HOURS={Low:6,Medium:14,High:28};
+var IFPUG_WEIGHTS={EI:{Low:3,Medium:4,High:6},EO:{Low:4,Medium:5,High:7},EQ:{Low:3,Medium:4,High:6},ILF:{Low:7,Medium:10,High:15},EIF:{Low:5,Medium:7,High:10}};
+var CHANGE_TYPES=["New","Changed","Deleted","Unchanged"];
+function num(v,d){var n=Number(v);return isFinite(n)?n:d}
+function defaultChangeRules(){return{newFactor:100,deletedFactor:20,unchangedFactor:0,changedTiers:[{upTo:25,factor:25},{upTo:50,factor:50},{upTo:75,factor:75},{upTo:100,factor:100}]}}
+function changeFactor(rules,changeType,changePct){
+var r=rules||defaultChangeRules();
+if("Deleted"===changeType)return num(r.deletedFactor,20)/100;
+if("Unchanged"===changeType)return num(r.unchangedFactor,0)/100;
+if("Changed"===changeType){
+var tiers=(r.changedTiers||[]).slice().sort(function(a,b){return num(a.upTo,0)-num(b.upTo,0)});
+if(!tiers.length)return 1;
+var pct=Math.max(0,Math.min(100,num(changePct,0)));
+for(var i=0;i<tiers.length;i++)if(pct<=num(tiers[i].upTo,100))return num(tiers[i].factor,100)/100;
+return num(tiers[tiers.length-1].factor,100)/100}
+return num(r.newFactor,100)/100}
+function fpWeight(type,complexity){return IFPUG_WEIGHTS[type][complexity]}
+function rowCost(row,config){
+var book=config&&config.priceBook?config.priceBook:PRICE_BOOK;
+var f=changeFactor(config&&config.changeRules,row.changeType,row.changePct);
+return Math.round(num(book[row.complexity],0)*num(row.fp,0)*f)}
+var STATUS_DATES={Open:{},DoR:{dateDoR:"2026-05-04"},DoD:{dateDoR:"2026-04-20",dateDoD:"2026-05-11"},Tested:{dateDoR:"2026-04-06",dateDoD:"2026-04-27",dateTested:"2026-05-18"},Deployed:{dateDoR:"2026-03-09",dateDoD:"2026-03-30",dateTested:"2026-04-13",dateDeployed:"2026-05-25"}};
+function seedRows(appId,list){return list.map(function(tuple,idx){
+var name=tuple[0],type=tuple[1],complexity=tuple[2],status=tuple[3];
+var changeType=tuple[4]||"New",changePct=void 0===tuple[5]?100:tuple[5];
+var fp=fpWeight(type,complexity);
+var row={id:appId.toUpperCase()+"-"+String(idx+1).padStart(3,"0"),appId:appId,name:name,type:type,fp:fp,complexity:complexity,status:status,changeType:changeType,changePct:changePct};
+Object.assign(row,STATUS_DATES[status]);
+row.paid="Deployed"===status;
+row.cost=Math.round(PRICE_BOOK[complexity]*fp*changeFactor(null,changeType,changePct));
+return row})}
+var SEED_ROWS=[].concat(
+seedRows("aodb",[["1.1.0.1 - Flights - Schedule - Import","EI","High","Deployed"],["1.2.0.3 - Flights - Status - Update","EI","Medium","Deployed"],["1.4.1.0 - Stands - Allocation - View","EQ","Medium","Deployed"],["2.1.4.2 - Flights - Creation - Handler setting","EO","High","Tested"],["2.3.0.1 - Gates - Reassignment - Notify","EO","Medium","DoD"],["3.1.0.0 - Aircraft - Registry - File","ILF","High","DoR"],["3.2.0.1 - Turnaround - KPI - Report","EO","High","Open","Changed",40],["4.0.1.2 - Weather - Feed - Interface","EIF","Medium","Open","Deleted",100]]),
+seedRows("ciss",[["1.1.0.1 - Passenger - Profile - Maintain","EI","Medium","Deployed"],["1.2.0.2 - Check-in - Status - Query","EQ","Low","Deployed"],["2.1.0.1 - Boarding - Pass - Generate","EO","High","Tested"],["2.2.0.3 - Seat - Map - Update","EI","Medium","DoR","Changed",60],["3.0.0.1 - Loyalty - Account - File","ILF","Medium","Open"],["3.1.0.0 - Notifications - Email - Interface","EIF","Low","Open"]]),
+seedRows("ipf",[["1.1.0.1 - Assets - Register - Maintain","EI","Medium","Deployed"],["1.2.0.1 - Energy - Usage - Report","EO","Medium","Deployed"],["1.3.0.2 - Sensors - Reading - Import","EI","Low","Deployed"],["2.1.0.4 - Maintenance - Order - Create","EI","High","Tested"],["2.2.0.1 - Facilities - Booking - View","EQ","Low","DoD"],["3.0.0.1 - BIM - Model - File","ILF","High","DoR"],["3.1.0.0 - GIS - Layer - Interface","EIF","Medium","Open"],["3.2.0.2 - Compliance - Audit - Report","EO","Medium","Open","Changed",30]]),
+seedRows("acro",[["1.1.0.1 - Shipment - Manifest - Import","EI","High","Deployed"],["1.2.0.1 - Customs - Status - Query","EQ","Medium","Tested"],["2.1.0.2 - Cargo - Booking - Create","EI","High","DoD"],["2.2.0.1 - Warehouse - Slot - Update","EI","Medium","Open","Deleted",100],["3.0.0.1 - Dangerous Goods - Registry - File","ILF","High","Open","Changed",70]]));
+function defaultThresholds(){return{better:{green:80,amber:60},happier:{green:4,amber:3},cheaper:{green:18e3,amber:24e3,invert:!0},faster:{green:0,amber:-14}}}
+var APPS=[
+{appId:"aodb",name:"AODB",fullName:"Airport Operational Database",orgUnit:"Airport Operations",owner:"Owner A (redacted)",contractType:"fp",ratePerHour:150,hoursToDate:320,expectedThroughput:20,weeksElapsed:16,baselineDeadline:"2026-06-18",budgetFactor:1.04,scopeFactor:.96,overview:{loc:125e3,complexityIndex:7.2,developers:12},better:{security:99,maintainability:95,reliability:96,efficiency:94,functionalSuitability:97,mtbf:50,mttr:2},happier:{team:4.2,collaboration:4,usage:3.9},history:{"Last Month":{better:3,happier:.1,slackDays:2,spendShare:.1},"Last Quarter":{better:6,happier:.2,slackDays:4,spendShare:.28},"Last PI":{better:8,happier:.3,slackDays:5,spendShare:.36},YTD:{better:12,happier:.5,slackDays:8,spendShare:.66}}},
+{appId:"ciss",name:"CiSS",fullName:"Central Information System",orgUnit:"Passenger Services",owner:"Owner A (redacted)",contractType:"hour",ratePerHour:165,hoursToDate:240,expectedThroughput:4,weeksElapsed:14,baselineDeadline:"2026-05-01",budgetFactor:.9,scopeFactor:1.06,overview:{loc:89e3,complexityIndex:8.5,developers:8},better:{security:50,maintainability:60,reliability:52,efficiency:58,functionalSuitability:55,mtbf:50,mttr:14},happier:{team:4.3,collaboration:4.1,usage:4.2},history:{"Last Month":{better:-4,happier:.1,slackDays:-3,spendShare:.12},"Last Quarter":{better:-9,happier:0,slackDays:-8,spendShare:.31},"Last PI":{better:-11,happier:.1,slackDays:-11,spendShare:.4},YTD:{better:-16,happier:.2,slackDays:-18,spendShare:.7}}},
+{appId:"ipf",name:"IP&F",fullName:"Integrated Planning & Forecasting",orgUnit:"Infrastructure & Facilities",owner:"Owner B (redacted)",contractType:"fp",ratePerHour:145,hoursToDate:160,expectedThroughput:40,weeksElapsed:12,baselineDeadline:"2026-09-15",budgetFactor:1,scopeFactor:1,overview:{loc:156e3,complexityIndex:6.1,developers:15},better:{security:80,maintainability:75,reliability:78,efficiency:76,functionalSuitability:79,mtbf:30,mttr:6},happier:{team:3.6,collaboration:3.5,usage:3.4},history:{"Last Month":{better:1,happier:-.1,slackDays:0,spendShare:.08},"Last Quarter":{better:2,happier:-.2,slackDays:-1,spendShare:.22},"Last PI":{better:3,happier:-.2,slackDays:-2,spendShare:.3},YTD:{better:5,happier:-.4,slackDays:-3,spendShare:.58}}},
+{appId:"acro",name:"ACRO",fullName:"ACRO",orgUnit:"Cargo & Logistics",owner:"Owner C (redacted)",contractType:"hour",ratePerHour:155,hoursToDate:230,expectedThroughput:5,weeksElapsed:14,baselineDeadline:"2026-08-20",budgetFactor:.86,scopeFactor:.9,overview:{loc:43e3,complexityIndex:9.3,developers:5},better:{security:40,maintainability:45,reliability:42,efficiency:44,functionalSuitability:43,mtbf:10,mttr:23},happier:{team:3.3,collaboration:3.1,usage:3},history:{"Last Month":{better:-5,happier:-.2,slackDays:-4,spendShare:.14},"Last Quarter":{better:-11,happier:-.4,slackDays:-9,spendShare:.35},"Last PI":{better:-14,happier:-.5,slackDays:-12,spendShare:.44},YTD:{better:-20,happier:-.8,slackDays:-20,spendShare:.75}}}];
+var SEED_CONFIGS=APPS.map(function(app){
+var rows=SEED_ROWS.filter(function(r){return r.appId===app.appId});
+var fp=rows.filter(function(r){return"Deleted"!==r.changeType}).reduce(function(a,r){return a+r.fp},0);
+var cost=rows.reduce(function(a,r){return a+r.cost},0);
+return{appId:app.appId,name:app.name,fullName:app.fullName,orgUnit:app.orgUnit,qualityTarget:"A",owner:app.owner,contractType:app.contractType,fpMethod:"IFPUG",ratePerHour:app.ratePerHour,hoursToDate:app.hoursToDate,expectedThroughput:app.expectedThroughput,weeksElapsed:app.weeksElapsed,baselineBudget:1e3*Math.round(cost*app.budgetFactor/1e3),baselineDeadline:app.baselineDeadline,baselineScopeFp:Math.round(fp*app.scopeFactor),priceBook:Object.assign({},PRICE_BOOK),outputTariff:PRICE_BOOK.High,effortHoursByComplexity:Object.assign({},EFFORT_HOURS),changeRules:defaultChangeRules(),thresholds:defaultThresholds(),history:app.history,overview:app.overview,better:app.better,happier:app.happier}})},9835:function(__mod__,t,__wr__){__wr__.d(t,{StoreProvider:function(){return StoreProvider},V:function(){return CURRENT_USER},o:function(){return useStore}});var jsx=__wr__(7437),React=__wr__(2265),D=__wr__(1930);
+var STORAGE_KEY="core4-state-v2";
+var CURRENT_USER="owner";
+var Ctx=(0,React.createContext)(null);
+var seq=0;
+function entry(fields){seq+=1;return Object.assign({id:"a"+Date.now()+"-"+seq,timestamp:new Date().toISOString(),user:CURRENT_USER},fields)}
+var initialState=function(){return{rows:D.R6.map(function(r){return Object.assign({},r)}),configs:D.it.map(function(c){return Object.assign({},c)}),audit:[]}};
+var FUNCTIONAL_FIELDS=["name","type","complexity"];
+function normalise(row){
+if(void 0===row.changeType)row.changeType="New";
+if(void 0===row.changePct)row.changePct="Changed"===row.changeType?50:100;
+return row}
+function StoreProvider(props){
+var children=props.children;
+var stateTuple=(0,React.useState)(initialState),state=stateTuple[0],setState=stateTuple[1];
+var readyTuple=(0,React.useState)(!1),ready=readyTuple[0],setReady=readyTuple[1];
+(0,React.useEffect)(function(){try{var saved=localStorage.getItem(STORAGE_KEY);saved&&setState(JSON.parse(saved))}catch(e){}setReady(!0)},[]);
+(0,React.useEffect)(function(){if(ready)try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){}},[state,ready]);
+var updateRow=(0,React.useCallback)(function(id,patch){
+setState(function(prev){
+var log=[];
+var rows=prev.rows.map(function(row){
+if(row.id!==id)return row;
+var config=prev.configs.find(function(c){return c.appId===row.appId});
+var next=normalise(Object.assign({},row,patch));
+if(void 0!==patch.type||void 0!==patch.complexity)next.fp=D.mS(next.type,next.complexity);
+if(void 0===patch.changeType&&"Deployed"===row.status&&("New"===row.changeType||"Unchanged"===row.changeType)&&FUNCTIONAL_FIELDS.some(function(f){return void 0!==patch[f]&&String(patch[f])!==String(row[f])})){next.changeType="Changed";if(void 0===patch.changePct&&(void 0===row.changePct||100===row.changePct))next.changePct=50}
+if(void 0===patch.cost&&(void 0!==patch.fp||void 0!==patch.complexity||void 0!==patch.type||next.changeType!==row.changeType||next.changePct!==row.changePct))next.cost=D.Uj(next,config);
+Object.keys(next).forEach(function(field){
+if(String(void 0===row[field]?"":row[field])!==String(void 0===next[field]?"":next[field]))log.push(entry({action:"update",target:id,field:String(field),oldValue:String(void 0===row[field]?"":row[field]),newValue:String(void 0===next[field]?"":next[field])}))});
+return next});
+return Object.assign({},prev,{rows:rows,audit:log.concat(prev.audit)})})},[]);
+var addRow=(0,React.useCallback)(function(appId){
+setState(function(prev){
+var config=prev.configs.find(function(c){return c.appId===appId});
+var n=prev.rows.filter(function(r){return r.appId===appId}).length+1;
+var id=appId.toUpperCase()+"-NEW-"+n;
+var row={id:id,appId:appId,name:"New function - describe…",type:"EI",fp:4,complexity:"Medium",status:"Open",changeType:"New",changePct:100,paid:!1};
+row.cost=D.Uj(row,config);
+return Object.assign({},prev,{rows:[row].concat(prev.rows),audit:[entry({action:"create",target:id,note:"Row added (change type New, factor "+Math.round(100*D.cf(config&&config.changeRules,"New",100))+"%)"})].concat(prev.audit)})})},[]);
+var deleteRow=(0,React.useCallback)(function(id){
+setState(function(prev){return Object.assign({},prev,{rows:prev.rows.filter(function(r){return r.id!==id}),audit:[entry({action:"delete",target:id,note:"Row deleted"})].concat(prev.audit)})})},[]);
+var uploadRows=(0,React.useCallback)(function(appId,incoming){
+setState(function(prev){
+var config=prev.configs.find(function(c){return c.appId===appId});
+var rows=incoming.map(function(r){var row=normalise(Object.assign({},r));if(void 0===r.cost)row.cost=D.Uj(row,config);return row});
+return Object.assign({},prev,{rows:rows.concat(prev.rows.filter(function(r){return r.appId!==appId})),audit:[entry({action:"upload",target:"app:"+appId,note:"Uploaded "+rows.length+" rows (replaced sheet for "+appId.toUpperCase()+")"})].concat(prev.audit)})})},[]);
+var recalcCosts=(0,React.useCallback)(function(appId){
+setState(function(prev){
+var config=prev.configs.find(function(c){return c.appId===appId});
+var changed=0;
+var rows=prev.rows.map(function(row){
+if(row.appId!==appId)return row;
+var cost=D.Uj(row,config);
+if(cost===row.cost)return row;
+changed+=1;
+return Object.assign({},row,{cost:cost})});
+return Object.assign({},prev,{rows:rows,audit:[entry({action:"recalc",target:"app:"+appId,note:"Recalculated cost from change rules for "+changed+" function(s)"})].concat(prev.audit)})})},[]);
+var updateConfig=(0,React.useCallback)(function(appId,patch){
+setState(function(prev){
+var log=[];
+var configs=prev.configs.map(function(config){
+if(config.appId!==appId)return config;
+var next=Object.assign({},config,patch);
+Object.keys(patch).forEach(function(field){
+var before=JSON.stringify(config[field]),after=JSON.stringify(next[field]);
+before!==after&&log.push(entry({action:"config",target:"config:"+appId,field:String(field),oldValue:before,newValue:after}))});
+return next});
+return Object.assign({},prev,{configs:configs,audit:log.concat(prev.audit)})})},[]);
+var reset=(0,React.useCallback)(function(){setState(initialState())},[]);
+var value=(0,React.useMemo)(function(){return Object.assign({},state,{ready:ready,updateRow:updateRow,addRow:addRow,deleteRow:deleteRow,uploadRows:uploadRows,recalcCosts:recalcCosts,updateConfig:updateConfig,reset:reset})},[state,ready,updateRow,addRow,deleteRow,uploadRows,recalcCosts,updateConfig,reset]);
+return(0,jsx.jsx)(Ctx.Provider,{value:value,children:children})}
+function useStore(){var ctx=(0,React.useContext)(Ctx);if(!ctx)throw Error("useStore must be used within StoreProvider");return ctx}}}]);
