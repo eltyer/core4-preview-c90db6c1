@@ -8,14 +8,23 @@ var pct=function(v){return v+"%"};
 function periodLabel(p){return PERIOD_LABEL[p]||String(p).toLowerCase()}
 function unit(v,one,many){return 1===Math.abs(v)?one:many}
 function dirRag(v){return v>0?"good":v<0?"bad":null}
+function abs(v){return Math.abs(v)}
+function pctOf(v,base){var b=Math.abs(base);return isFinite(b)&&0!==b?Math.round(abs(v)/b*100)+"%":null}
+function gapWord(gap,unitOne,unitMany,above,below,onTarget,target,base){
+if(0===gap)return onTarget+" "+target;
+var p=pctOf(gap,base);
+return abs(gap)+" "+unit(gap,unitOne,unitMany)+" "+(gap>0?above:below)+" "+target+(p?" ("+p+")":"")}
+function moveWord(v,unitOne,unitMany,up,down,flat){
+return 0===v?flat:abs(v)+" "+unit(v,unitOne,unitMany)+" "+(v>0?up:down)}
+function fixed1(v){return(Math.round(10*v)/10).toFixed(1)}
 function avg(list){return list.length?list.reduce(function(a,b){return a+b},0)/list.length:0}
 function shiftDate(iso,days){return new Date(Date.parse(iso)+days*DAY).toISOString().slice(0,10)}
 var GROUPS=[
 {key:"overview",title:"1. Overview",color:"bg-slate-100 text-slate-700",
-completion:function(config,d){return{text:d.totalFp+" FP",sub:config.overview.developers+" devs"}},
-change:function(config,d){return{text:d.totalFp+" FP",sub:config.overview.developers+" devs"}},
-rollupCompletion:function(configs,derived){return{text:derived.reduce(function(a,d){return a+d.totalFp},0)+" FP",sub:configs.reduce(function(a,c){return a+c.overview.developers},0)+" devs"}},
-rollupChange:function(configs,derived){return{text:derived.reduce(function(a,d){return a+d.totalFp},0)+" FP",sub:configs.reduce(function(a,c){return a+c.overview.developers},0)+" devs"}},
+completion:function(config,d){return{text:d.totalFp+" FP",sub:config.overview.developers+" developers"}},
+change:function(config,d){return{text:d.totalFp+" FP",sub:config.overview.developers+" developers"}},
+rollupCompletion:function(configs,derived){return{text:derived.reduce(function(a,d){return a+d.totalFp},0)+" FP",sub:configs.reduce(function(a,c){return a+c.overview.developers},0)+" developers"}},
+rollupChange:function(configs,derived){return{text:derived.reduce(function(a,d){return a+d.totalFp},0)+" FP",sub:configs.reduce(function(a,c){return a+c.overview.developers},0)+" developers"}},
 metrics:[
 {label:"Contract type",source:"Configuration, contract-type toggle",cell:function(c){return{text:"fp"===c.contractType?"FP-based":"Hour-based"}}},
 {label:"FP method",source:"Configuration, FP counting method",cell:function(c){return{text:c.fpMethod}}},
@@ -25,17 +34,17 @@ metrics:[
 {key:"better",title:"2. Better (Quality)",color:"bg-emerald-50 text-emerald-800",
 completion:function(config,d){
 var target=config.qualityTarget,floor=F.gF(target),g=F.b9(d.betterScore);
-return{text:g+" ("+d.betterScore+"%)",sub:F.pP(d.betterScore-floor,floor)+" vs target "+target+" ("+floor+"%)",rag:F.I(g)>=F.I(target)?"good":F.I(g)===F.I(target)-1?"warn":"bad"}},
+return{text:g+" ("+d.betterScore+"%)",sub:gapWord(d.betterScore-floor,"pt","pts","above target","below target","on target",target,floor),rag:F.I(g)>=F.I(target)?"good":F.I(g)===F.I(target)-1?"warn":"bad"}},
 change:function(config,d,period){
 var h=F.hy(config,period),prev=d.betterScore-h.better,gNow=F.b9(d.betterScore),gPrev=F.b9(prev);
 var move=prev+"% → "+d.betterScore+"%";
-return{text:F.qN(h.better," "+unit(h.better,"pt","pts")),sub:gPrev!==gNow?gPrev+" → "+gNow+" ("+move+")":move,rag:dirRag(h.better)}},
+return{text:moveWord(h.better,"pt","pts","better","worse","unchanged"),sub:gPrev!==gNow?gPrev+" → "+gNow+" ("+move+")":move,rag:dirRag(h.better)}},
 rollupCompletion:function(configs,derived){
 var score=Math.round(avg(derived.map(function(d){return d.betterScore}))),floor=Math.round(avg(configs.map(function(c){return F.gF(c.qualityTarget)})));
-return{text:F.b9(score)+" ("+score+"%)",sub:F.pP(score-floor,floor)+" vs portfolio target "+F.b9(floor)+" ("+floor+"%)"}},
+return{text:F.b9(score)+" ("+score+"%)",sub:gapWord(score-floor,"pt","pts","above target","below target","on target",F.b9(floor),floor)}},
 rollupChange:function(configs,derived,period){
 var score=Math.round(avg(derived.map(function(d){return d.betterScore}))),delta=Math.round(avg(configs.map(function(c){return F.hy(c,period).better})));
-return{text:F.qN(delta," "+unit(delta,"pt","pts")),sub:score-delta+"% → "+score+"% portfolio avg",rag:dirRag(delta)}},
+return{text:moveWord(delta,"pt","pts","better","worse","unchanged"),sub:score-delta+"% → "+score+"% portfolio average",rag:dirRag(delta)}},
 metrics:[
 {label:"Security (ISO 5055)",source:"TiCS (interface)",emphasis:!0,cell:function(c){return{text:pct(c.better.security),rag:F.wq(c.better.security,c.thresholds.better)}}},
 {label:"Maintainability (ISO 5055)",source:"TiCS (interface)",cell:function(c){return{text:pct(c.better.maintainability),rag:F.wq(c.better.maintainability,c.thresholds.better)}}},
@@ -46,33 +55,36 @@ metrics:[
 {label:"MTTR",source:"Jira, incident tickets (open/close)",cell:function(c){return{text:c.better.mttr+" hrs"}}}]},
 {key:"happier",title:"3. Happier (Happiness)",color:"bg-amber-50 text-amber-800",
 completion:function(config,d){
-var target=config.thresholds.happier.green;
-return{text:d.happierScore.toFixed(1),sub:F.pP(d.happierScore-target,target)+" vs target "+target.toFixed(1),rag:F.wq(d.happierScore,config.thresholds.happier)}},
+var target=config.thresholds.happier.green,gap=Math.round(10*(d.happierScore-target))/10;
+return{text:d.happierScore.toFixed(1),sub:0===gap?"on target "+target.toFixed(1):fixed1(abs(gap))+" "+(gap>0?"above target ":"below target ")+target.toFixed(1)+" ("+pctOf(gap,target)+")",rag:F.wq(d.happierScore,config.thresholds.happier)}},
 change:function(config,d,period){
 var h=F.hy(config,period),prev=Math.round(10*(d.happierScore-h.happier))/10;
-return{text:F.sd(h.happier,1),sub:prev.toFixed(1)+" → "+d.happierScore.toFixed(1),rag:dirRag(h.happier)}},
+return{text:0===h.happier?"unchanged":fixed1(abs(h.happier))+" "+(h.happier>0?"better":"worse"),sub:prev.toFixed(1)+" → "+d.happierScore.toFixed(1),rag:dirRag(h.happier)}},
 rollupCompletion:function(configs,derived){
-var score=Math.round(10*avg(derived.map(function(d){return d.happierScore})))/10,target=Math.round(10*avg(configs.map(function(c){return c.thresholds.happier.green})))/10;
-return{text:score.toFixed(1),sub:F.pP(score-target,target)+" vs portfolio target "+target.toFixed(1)}},
+var score=Math.round(10*avg(derived.map(function(d){return d.happierScore})))/10,target=Math.round(10*avg(configs.map(function(c){return c.thresholds.happier.green})))/10,gap=Math.round(10*(score-target))/10;
+return{text:score.toFixed(1),sub:0===gap?"on target "+target.toFixed(1):fixed1(abs(gap))+" "+(gap>0?"above target ":"below target ")+target.toFixed(1)+" ("+pctOf(gap,target)+")"}},
 rollupChange:function(configs,derived,period){
 var score=Math.round(10*avg(derived.map(function(d){return d.happierScore})))/10,delta=Math.round(10*avg(configs.map(function(c){return F.hy(c,period).happier})))/10;
-return{text:F.sd(delta,1),sub:(Math.round(10*(score-delta))/10).toFixed(1)+" → "+score.toFixed(1)+" portfolio avg",rag:dirRag(delta)}},
+return{text:0===delta?"unchanged":fixed1(abs(delta))+" "+(delta>0?"better":"worse"),sub:(Math.round(10*(score-delta))/10).toFixed(1)+" → "+score.toFixed(1)+" portfolio average",rag:dirRag(delta)}},
 metrics:[
 {label:"Team happiness",source:"Happiness survey (per sprint)",emphasis:!0,cell:function(c){return{text:c.happier.team.toFixed(1),rag:F.wq(c.happier.team,c.thresholds.happier)}}},
 {label:"Collaboration happiness",source:"Happiness survey (per sprint)",cell:function(c){return{text:c.happier.collaboration.toFixed(1),rag:F.wq(c.happier.collaboration,c.thresholds.happier)}}},
 {label:"Usage happiness",source:"Happiness survey (per sprint)",cell:function(c){return{text:c.happier.usage.toFixed(1),rag:F.wq(c.happier.usage,c.thresholds.happier)}}}]},
 {key:"cheaper",title:"4. Cheaper (Cost)",color:"bg-rose-50 text-rose-800",note:COST_NOTE,
 completion:function(config,d){
-return{text:F.s7(d.eac),sub:F.pP(d.vacCost,config.baselineBudget)+" vs budget "+F.s7(config.baselineBudget),rag:d.vacCost>=0?"good":d.vacCost>-.08*config.baselineBudget?"warn":"bad"}},
+var vac=d.vacCost;
+return{text:F.s7(d.eac),sub:0===vac?"on budget "+F.s7(config.baselineBudget):F.s7(abs(vac))+" "+(vac>0?"under budget":"over budget")+" ("+pctOf(vac,config.baselineBudget)+")",rag:vac>=0?"good":vac>-.08*config.baselineBudget?"warn":"bad"}},
 change:function(config,d,period){
-var h=F.hy(config,period);
-return{text:F.s7(d.actuals*h.spendShare),sub:"spent in "+periodLabel(period)}},
+var h=F.hy(config,period),prevEac=d.eac-d.eac*(h.eacShiftShare||0);
+return{text:F.s7(d.actuals*h.spendShare)+" spent",sub:"forecast "+F.s7(prevEac)+" → "+F.s7(d.eac)}},
 rollupCompletion:function(configs,derived){
 var eac=derived.reduce(function(a,d){return a+d.eac},0),budget=configs.reduce(function(a,c){return a+c.baselineBudget},0),vac=budget-eac;
-return{text:F.s7(eac),sub:F.pP(vac,budget)+" vs portfolio budget "+F.s7(budget),rag:vac>=0?"good":"bad"}},
+return{text:F.s7(eac),sub:0===vac?"on budget "+F.s7(budget):F.s7(abs(vac))+" "+(vac>0?"under budget":"over budget")+" ("+pctOf(vac,budget)+")",rag:vac>=0?"good":"bad"}},
 rollupChange:function(configs,derived,period){
 var spend=configs.reduce(function(a,c,i){return a+derived[i].actuals*F.hy(c,period).spendShare},0);
-return{text:F.s7(spend),sub:"spent in "+periodLabel(period)}},
+var eac=derived.reduce(function(a,d){return a+d.eac},0);
+var prevEac=configs.reduce(function(a,c,i){return a+derived[i].eac-derived[i].eac*(F.hy(c,period).eacShiftShare||0)},0);
+return{text:F.s7(spend)+" spent",sub:"forecast "+F.s7(prevEac)+" → "+F.s7(eac)}},
 metrics:[
 {label:"Actuals to date",source:"Hour: Oracle x rate. FP: sum of function prices",cell:function(c,d){return{text:F.s7(d.actuals)}}},
 {label:"Estimate to Complete",source:"Hour: estimate (complexity x rate x change factor). FP: agreed price after change factor",cell:function(c,d){return{text:F.s7(d.etc),sub:"fp"===c.contractType?"agreed":"estimate"}}},
@@ -82,17 +94,18 @@ metrics:[
 {label:"Variance at completion (VAC)",source:"Derived: Budget minus EAC, and the same gap as a share of budget",emphasis:!0,cell:function(c,d){return{text:F.s7(d.vacCost),sub:F.pP(d.vacCost,c.baselineBudget),rag:d.vacCost>=0?"good":d.vacCost>-.08*c.baselineBudget?"warn":"bad"}}}]},
 {key:"faster",title:"5. Faster (Time & Scope)",color:"bg-sky-50 text-sky-800",
 completion:function(config,d){
-return{text:F.G$(d.forecastDate),sub:F.qN(d.forecastSlackDays," "+unit(d.forecastSlackDays,"day","days"))+" vs planned "+F.G$(config.baselineDeadline),rag:F.wq(d.forecastSlackDays,config.thresholds.faster)}},
+var slack=d.forecastSlackDays;
+return{text:F.G$(d.forecastDate),sub:0===slack?"on time against "+F.G$(config.baselineDeadline):abs(slack)+" "+unit(slack,"day","days")+" "+(slack>0?"early":"late")+" against "+F.G$(config.baselineDeadline),rag:F.wq(slack,config.thresholds.faster)}},
 change:function(config,d,period){
 var h=F.hy(config,period),prevSlack=d.forecastSlackDays-h.slackDays;
 var prevForecast=shiftDate(config.baselineDeadline,-prevSlack);
-return{text:F.qN(h.slackDays," "+unit(h.slackDays,"day","days")),sub:F.G$(prevForecast)+" → "+F.G$(d.forecastDate),rag:dirRag(h.slackDays)}},
+return{text:moveWord(h.slackDays,"day","days","recovered","slipped","no movement"),sub:"forecast "+F.G$(prevForecast)+" → "+F.G$(d.forecastDate),rag:dirRag(h.slackDays)}},
 rollupCompletion:function(configs,derived){
 var slack=Math.round(avg(derived.map(function(d){return d.forecastSlackDays})));
-return{text:0===slack?"on time":slack>0?slack+" days early":-slack+" days late",sub:F.qN(slack," "+unit(slack,"day","days"))+" vs plan, portfolio avg",rag:slack>=0?"good":slack>-14?"warn":"bad"}},
+return{text:0===slack?"on time":abs(slack)+" "+unit(slack,"day","days")+" "+(slack>0?"early":"late"),sub:"average across "+derived.length+" applications",rag:slack>=0?"good":slack>-14?"warn":"bad"}},
 rollupChange:function(configs,derived,period){
 var delta=Math.round(avg(configs.map(function(c){return F.hy(c,period).slackDays})));
-return{text:F.qN(delta," "+unit(delta,"day","days")),sub:"forecast movement, portfolio avg",rag:dirRag(delta)}},
+return{text:moveWord(delta,"day","days","recovered","slipped","no movement"),sub:"average across "+derived.length+" applications",rag:dirRag(delta)}},
 metrics:[
 {label:"Forecast vs planned (days)",source:"Derived: forecast date vs deadline",emphasis:!0,cell:function(c,d){return{text:F.qN(d.forecastSlackDays," days"),rag:F.wq(d.forecastSlackDays,c.thresholds.faster)}}},
 {label:"Throughput",source:"FPA sheet (Deployed FP divided by time)",cell:function(c,d){return{text:d.throughput+" FP/wk"}}},
@@ -119,7 +132,7 @@ var derived=(0,React.useMemo)(function(){var map={};return configs.forEach(funct
 var toggle=function(key){setCollapsed(function(prev){var next=Object.assign({},prev);return next[key]=!prev[key],next})};
 return(0,jsx.jsxs)("div",{className:"jsx-448d443c98f438e mx-auto max-w-7xl px-6 py-8",children:[
 (0,jsx.jsx)("h1",{className:"jsx-448d443c98f438e mb-1 text-2xl font-extrabold text-core-navy",children:"Core4 Software Delivery Dashboard"}),
-(0,jsx.jsx)("p",{className:"jsx-448d443c98f438e mb-5 text-sm text-slate-500",children:"Scope, quality, time and cost across critical applications. Each category headline answers one question at a time: At completion shows where the project lands against its agreed target, This period shows what moved. Expand a category for detail."}),
+(0,jsx.jsx)("p",{className:"jsx-448d443c98f438e mb-5 text-sm text-slate-500",children:"Scope, quality, time and cost across critical applications. Each category headline answers one question at a time: At completion shows where the project lands against its agreed target, This period shows what moved over the selected window. Expand a category for the underlying metrics."}),
 (0,jsx.jsxs)("div",{className:"jsx-448d443c98f438e mb-4 flex flex-wrap items-end gap-4 rounded-xl border border-slate-200 bg-white p-4",children:[
 (0,jsx.jsx)(Field,{label:"Headline",children:(0,jsx.jsx)("div",{className:"jsx-448d443c98f438e flex overflow-hidden rounded-lg border border-slate-200",children:VIEWS.map(function(v){return(0,jsx.jsx)("button",{onClick:function(){setView(v.key)},className:"jsx-448d443c98f438e "+("px-4 py-1.5 text-sm font-medium "+(view===v.key?"bg-core-navy text-white":"bg-white text-slate-600 hover:bg-slate-50")),children:v.label},v.key)})})}),
 (0,jsx.jsx)(Field,{label:"Level (org roll-up)",children:(0,jsx.jsx)("select",{value:level,onChange:function(e){setLevel(e.target.value)},className:"jsx-448d443c98f438e input",children:D.HJ.map(function(l){return(0,jsx.jsx)("option",{value:l,className:"jsx-448d443c98f438e",children:l},l)})})}),
@@ -175,7 +188,7 @@ var sum=nums.reduce(function(a,b){return a+b},0),mean=sum/nums.length;
 return first.includes("%")?{text:Math.round(mean)+"%"}:/€.*\/FP/.test(first)?{text:F.s7(mean)+"/FP"}:first.trim().startsWith("€")?{text:F.s7(sum)}:/h\/FP/.test(first)?{text:Math.round(10*mean)/10+" h/FP"}:/FP\/wk/.test(first)?{text:Math.round(10*sum)/10+" FP/wk"}:/FP\/PI/.test(first)?{text:Math.round(10*sum)/10+" FP/PI"}:/FP/.test(first)?{text:Math.round(sum)+" FP"}:/days|hrs/.test(first)?{text:Math.round(mean)+(first.includes("days")?" days":" hrs")}:{text:String(Math.round(10*mean)/10)}}
 function parseNum(text){var m=text.match(/-?[\d.,]+/);if(!m)return null;var v=parseFloat(m[0].replace(/,/g,""));return isNaN(v)?null:(/M/.test(text)?v*=1e6:/K/.test(text)&&(v*=1e3),v)}
 function Legend(props){
-var note="period"===props.view?"Headline shows the movement over "+periodLabel(props.period)+", then the value before and after. Colour marks the direction of travel; cost is shown neutral because spending is not good or bad on its own.":"Headline shows where the project lands, then that gap as a percentage of the agreed target. Positive always means favourable.";
+var note="period"===props.view?"Headline is what moved over "+periodLabel(props.period)+"; beneath it, the forecast before and after. Colour marks the direction of travel. Cost shows money actually spent, and is left neutral because spend is not good or bad on its own.":"Headline is where the project lands; beneath it, the variance at completion - the gap to the agreed target, in its own unit and as a percentage of that target.";
 return(0,jsx.jsxs)("div",{className:"mt-4 flex flex-wrap items-center gap-5 text-xs text-slate-500",children:[
 (0,jsx.jsx)("span",{className:"font-medium",children:"RAG:"}),
 (0,jsx.jsxs)("span",{className:"flex items-center gap-1",children:[(0,jsx.jsx)("i",{className:"inline-block h-2.5 w-2.5 rounded-full bg-good"})," on target"]}),
