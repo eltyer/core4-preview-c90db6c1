@@ -28,8 +28,8 @@ var NOCMP="\u2013";
 function wd(value,delta){return delta?value+DSEP+delta:value}
 function sNum(v){return sg(v)+v}
 function sNum1(v){var r=Math.round(10*v)/10;return 0===r?"0":sg(r)+r.toFixed(1)}
-function sFull(v){return(v<0?"-":v>0?"+":"")+F.M1(abs(v))}
-function before(c,d,period){var h=F.hy(c,period),fp=h.deliveredFp||0,wk=weeksIn(period),w=c.weeksElapsed-wk,f=d.deliveredFp-fp;return w<=0||f<=0?null:{weeks:w,fp:f,hours:c.hoursToDate*(1-h.spendShare),spend:d.actuals*(1-h.spendShare)}}
+function sFull(v){var r=Math.round(v);return(r<0?"-":r>0?"+":"")+F.M1(abs(r))}
+function before(c,d,period){var h=F.hy(c,period),fp=h.deliveredFp||0,wk=weeksIn(period),w=c.weeksElapsed-wk,f=d.deliveredFp-fp;return w<=0||f<=0?null:{weeks:w,fp:f,hours:c.hoursToDate*(1-h.spendShare),spend:d.actuals-spendIn(c,d,period)}}
 function sPts(v){return sg(v)+v+" "+unit(v,"pt","pts")}
 function sDec(v){return sg(v)+fixed1(v)}
 function money(v){return(v<0?"-":"")+F.s7(abs(v))}
@@ -47,7 +47,7 @@ function decMove(v){return 0===v?"no change":fixed1(abs(v))+" "+(v>0?"higher":"l
 function moneyMove(v){return 0===Math.round(v)?"no change":F.s7(abs(v))+" "+(v>0?"higher":"lower")}
 function fpMove(v){return 0===v?"no change":abs(v)+" FP "+(v>0?"added":"removed")}
 function fpLevel(v){return 0===v?"no change":abs(v)+" FP "+(v>0?"higher":"lower")}
-function spendIn(c,d,period){return d.actuals*F.hy(c,period).spendShare}
+function spendIn(c,d,period){var h=F.hy(c,period);return "fp"===c.contractType?d.costPerFp*(h.deliveredFp||0):d.actuals*h.spendShare}
 function eacMove(c,d,period){return d.eac*(F.hy(c,period).eacShiftShare||0)}
 function avg(list){return list.length?list.reduce(function(a,b){return a+b},0)/list.length:0}
 function shortDate(iso){return new Date(Date.parse(iso)).toLocaleDateString("en-GB",{day:"numeric",month:"short"})}
