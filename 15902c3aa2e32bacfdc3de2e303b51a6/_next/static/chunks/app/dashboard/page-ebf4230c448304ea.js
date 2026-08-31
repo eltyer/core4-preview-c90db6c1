@@ -150,7 +150,7 @@ configs.map(function(c){return(0,jsx.jsxs)("th",{className:"jsx-448d443c98f438e 
 (0,jsx.jsx)("span",{className:"jsx-448d443c98f438e block",children:c.name}),
 (0,jsx.jsx)("span",{className:"jsx-448d443c98f438e ml-auto block max-w-[11rem] text-xs font-normal leading-tight text-slate-400",children:c.fullName})]},c.appId)})]})}),
 (0,jsx.jsx)("tbody",{className:"jsx-448d443c98f438e",children:GROUPS.map(function(group){return(0,jsx.jsx)(GroupRows,{group:group,configs:configs,derived:derived,period:period,view:view,collapsed:!!collapsed[group.key],onToggle:function(){toggle(group.key)},showRollup:showRollup,onSource:setSource},group.key)})})]})})}),
-(0,jsx.jsx)(Legend,{view:view,period:period}),
+(0,jsx.jsx)(Legend,{}),
 source&&(0,jsx.jsx)("div",{onClick:function(){setSource(null)},className:"jsx-448d443c98f438e fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4",children:(0,jsx.jsxs)("div",{onClick:function(e){e.stopPropagation()},className:"jsx-448d443c98f438e w-full max-w-md rounded-xl bg-white p-6 shadow-xl",children:[
 (0,jsx.jsx)("p",{className:"jsx-448d443c98f438e text-xs font-semibold uppercase tracking-wide text-core-accent",children:"Data source"}),
 (0,jsx.jsx)("h3",{className:"jsx-448d443c98f438e mt-1 text-lg font-bold text-core-navy",children:source.metric}),
@@ -199,12 +199,8 @@ if(!nums.length)return{text:""};
 var sum=nums.reduce(function(a,b){return a+b},0),mean=sum/nums.length;
 return first.includes("%")?{text:Math.round(mean)+"%"}:/€.*\/FP/.test(first)?{text:F.s7(mean)+"/FP"}:first.trim().startsWith("€")?{text:F.s7(sum)}:/h\/FP/.test(first)?{text:Math.round(10*mean)/10+" h/FP"}:/FP\/wk/.test(first)?{text:Math.round(10*sum)/10+" FP/wk"}:/FP\/PI/.test(first)?{text:Math.round(10*sum)/10+" FP/PI"}:/FP/.test(first)?{text:Math.round(sum)+" FP"}:/days|hrs/.test(first)?{text:Math.round(mean)+(first.includes("days")?" days":" hrs")}:{text:String(Math.round(10*mean)/10)}}
 function parseNum(text){var m=text.match(/-?[\d.,]+/);if(!m)return null;var v=parseFloat(m[0].replace(/,/g,""));return isNaN(v)?null:(/M/.test(text)?v*=1e6:/K/.test(text)&&(v*=1e3),v)}
-function Legend(props){
-var note="period"===props.view?"Values at end of "+periodLabel(props.period)+", change in brackets.":"Values at completion, with the gap to target.";
-return(0,jsx.jsxs)("div",{className:"mt-4 flex flex-wrap items-center gap-5 text-xs text-slate-500",children:[
+function Legend(){return(0,jsx.jsxs)("div",{className:"mt-4 flex flex-wrap items-center gap-5 text-xs text-slate-500",children:[
 (0,jsx.jsx)("span",{className:"font-medium",children:"RAG:"}),
 (0,jsx.jsxs)("span",{className:"flex items-center gap-1",children:[(0,jsx.jsx)("i",{className:"inline-block h-2.5 w-2.5 rounded-full bg-good"})," on target"]}),
 (0,jsx.jsxs)("span",{className:"flex items-center gap-1",children:[(0,jsx.jsx)("i",{className:"inline-block h-2.5 w-2.5 rounded-full bg-warn"})," watch"]}),
-(0,jsx.jsxs)("span",{className:"flex items-center gap-1",children:[(0,jsx.jsx)("i",{className:"inline-block h-2.5 w-2.5 rounded-full bg-bad"})," off target"]}),
-(0,jsx.jsx)("span",{className:"ml-4",children:note}),
-(0,jsx.jsx)("span",{children:"Tags show what each metric is measured against. Thresholds are set per category in Configuration."})]})}}},function(e){e.O(0,[29,620,971,117,744],function(){return e(e.s=1113)}),_N_E=e.O()}]);
+(0,jsx.jsxs)("span",{className:"flex items-center gap-1",children:[(0,jsx.jsx)("i",{className:"inline-block h-2.5 w-2.5 rounded-full bg-bad"})," off target"]})]})}}},function(e){e.O(0,[29,620,971,117,744],function(){return e(e.s=1113)}),_N_E=e.O()}]);
