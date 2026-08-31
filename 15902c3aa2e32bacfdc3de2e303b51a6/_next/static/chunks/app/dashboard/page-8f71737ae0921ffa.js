@@ -3,7 +3,6 @@ var DAY=864e5;
 var DELTA_CLASS={good:"text-good",warn:"text-warn",bad:"text-bad"};
 var RAG_CLASS={good:"text-good font-semibold",warn:"text-warn font-semibold",bad:"text-bad font-semibold"};
 var BASIS_CLASS={agreed:"text-slate-400","to date":"text-slate-400",forecast:"text-core-blue/60"};
-var VIEWS=[{key:"completion",label:"At completion"},{key:"period",label:"This period"}];
 var PERIOD_LABEL={"Last Month":"last month","Last Quarter":"last quarter","Last PI":"last PI",YTD:"year to date"};
 var COST_NOTE="Cost covers build and built-in testing only. Separate test phases, licences and run/maintenance are not included in these figures.";
 var pct=function(v){return v+"%"};
@@ -140,7 +139,7 @@ return(0,jsx.jsxs)("div",{className:"jsx-448d443c98f438e mx-auto max-w-7xl px-6 
 (0,jsx.jsxs)("div",{className:"jsx-448d443c98f438e mb-4 flex flex-wrap items-end gap-4 rounded-xl border border-slate-200 bg-white p-4",children:[
 (0,jsx.jsx)(Field,{label:"Level",children:(0,jsx.jsx)("select",{value:level,onChange:function(e){setLevel(e.target.value)},className:"jsx-448d443c98f438e input",children:D.HJ.map(function(l){return (0,jsx.jsx)("option",{value:l,className:"jsx-448d443c98f438e",children:l},l)})})}),
 (0,jsx.jsx)(Field,{label:"Period",children:(0,jsx.jsx)("select",{value:period,onChange:function(e){setPeriod(e.target.value)},className:"jsx-448d443c98f438e input",children:D.PR.map(function(x){return (0,jsx.jsx)("option",{className:"jsx-448d443c98f438e",children:x},x)})})}),
-(0,jsx.jsx)(Field,{label:"Data",children:(0,jsx.jsx)("div",{className:"jsx-448d443c98f438e flex overflow-hidden rounded-lg border border-slate-200",children:VIEWS.map(function(v){return (0,jsx.jsx)("button",{onClick:function(){setView(v.key)},className:"jsx-448d443c98f438e "+("px-4 py-1.5 text-sm font-medium "+(view===v.key?"bg-core-navy text-white":"bg-white text-slate-600 hover:bg-slate-50")),children:v.label},v.key)})})}),
+(0,jsx.jsx)(Field,{label:"Data",children:(0,jsx.jsxs)("button",{type:"button","aria-pressed":"period"===view?"true":"false",onClick:function(){setView("period"===view?"completion":"period")},className:"jsx-448d443c98f438e "+("btn btn-icon "+("period"===view?"btn-on":"")),children:[(0,jsx.jsx)("svg",{width:"12",height:"12",viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:"2.2",strokeLinejoin:"round","aria-hidden":"true",className:"jsx-448d443c98f438e",children:(0,jsx.jsx)("path",{d:"M12 4 3 20h18z",className:"jsx-448d443c98f438e"})}),"View delta"]})}),
 (0,jsx.jsx)("button",{onClick:function(){setShowRollup(function(v){return!v})},className:"jsx-448d443c98f438e ml-auto "+("btn "+(showRollup?"btn-on":"")),children:"Roll-up"}),
 !ready&&(0,jsx.jsx)("span",{className:"jsx-448d443c98f438e text-xs text-slate-400",children:"loading saved state..."})]}),
 (0,jsx.jsx)("div",{className:"jsx-448d443c98f438e pan-wrap overflow-hidden rounded-xl border border-slate-200 bg-white",children:(0,jsx.jsx)("div",{ref:panRef,className:"jsx-448d443c98f438e pan overflow-x-auto",children:(0,jsx.jsxs)("table",{className:"jsx-448d443c98f438e w-full min-w-[1420px] table-fixed border-collapse text-sm",children:[
