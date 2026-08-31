@@ -169,7 +169,7 @@ return(0,jsx.jsxs)("tr",{className:"jsx-8601196c1c51a128 border-b border-slate-1
 (0,jsx.jsx)("td",{className:"jsx-8601196c1c51a128 px-3 py-1.5 text-center",children:(0,jsx.jsx)("input",{type:"checkbox",checked:row.paid,onChange:function(e){onChange(row.id,{paid:e.target.checked})},className:"jsx-8601196c1c51a128"})}),
 (0,jsx.jsx)("td",{className:"jsx-8601196c1c51a128 px-3 py-1.5 text-right",children:(0,jsx.jsx)(NumberCell,{value:row.cost,onCommit:function(v){onChange(row.id,{cost:v})},className:"w-24"})}),
 (0,jsx.jsx)("td",{className:"jsx-8601196c1c51a128 px-3 py-1.5",children:(0,jsx.jsx)("button",{onClick:function(){onDelete(row.id)},title:"Delete",className:"jsx-8601196c1c51a128 text-slate-300 hover:text-bad",children:"x"})}),
-(0,jsx.jsx)(SJ(),{id:"8601196c1c51a128",children:".cell-select{border:1px solid#e2e8f0;-webkit-border-radius:6px;-moz-border-radius:6px;border-radius:6px;padding:3px 6px;font-size:13px;background:white}"})]})}
+(0,jsx.jsx)(SJ(),{id:"8601196c1c51a128",children:".cell-select{border:1px solid var(--v-border);border-radius:6px;padding:3px 6px;font-size:13px;background:var(--v-surface);color:var(--v-t1)}"})]})}
 function TextCell(props){var value=props.value,onCommit=props.onCommit,cls=props.className||"";
 var st=(0,React.useState)(value),draft=st[0],setDraft=st[1];
 (0,React.useEffect)(function(){setDraft(value)},[value]);

@@ -101,12 +101,11 @@ function onDown(e){
 if(void 0!==e.button&&0!==e.button)return;
 if(e.target&&e.target.closest&&e.target.closest("select,input,textarea,button,a,option"))return;
 id=void 0===e.pointerId?1:e.pointerId;moved=false;x0=e.clientX;left0=el.scrollLeft;
-try{el.setPointerCapture&&el.setPointerCapture(id)}catch(err){}
 }
 function onMove(e){
 if(null===id)return;
 var dx=e.clientX-x0;
-if(!moved){if(Math.abs(dx)<3)return;moved=true;el.classList.add("is-grabbing")}
+if(!moved){if(Math.abs(dx)<3)return;moved=true;el.classList.add("is-grabbing");try{el.setPointerCapture&&el.setPointerCapture(id)}catch(err){}}
 el.scrollLeft=left0-dx;
 if(e.cancelable)e.preventDefault();
 }
@@ -130,16 +129,16 @@ var derived=(0,React.useMemo)(function(){var map={};return configs.forEach(funct
 var toggle=function(key){setCollapsed(function(prev){var next=Object.assign({},prev);return next[key]=!prev[key],next})};
 return(0,jsx.jsxs)("div",{className:"jsx-448d443c98f438e mx-auto max-w-7xl px-6 py-8",children:[
 (0,jsx.jsx)("h1",{className:"jsx-448d443c98f438e mb-1 text-2xl font-extrabold text-core-navy",children:"Software Delivery Dashboard"}),
-(0,jsx.jsx)("p",{className:"jsx-448d443c98f438e mb-5 text-sm text-slate-500",children:"Scope, quality, time and cost across critical applications. Expand a category for its metrics."}),
+(0,jsx.jsx)("p",{className:"jsx-448d443c98f438e mb-5 text-sm text-slate-500",children:"Scope, quality, time and cost across critical applications."}),
 (0,jsx.jsxs)("div",{className:"jsx-448d443c98f438e mb-4 flex flex-wrap items-end gap-4 rounded-xl border border-slate-200 bg-white p-4",children:[
 (0,jsx.jsx)(Field,{label:"Level",children:(0,jsx.jsx)("select",{value:level,onChange:function(e){setLevel(e.target.value)},className:"jsx-448d443c98f438e input",children:D.HJ.map(function(l){return (0,jsx.jsx)("option",{value:l,className:"jsx-448d443c98f438e",children:l},l)})})}),
 (0,jsx.jsx)(Field,{label:"Period",children:(0,jsx.jsx)("select",{value:period,onChange:function(e){setPeriod(e.target.value)},className:"jsx-448d443c98f438e input",children:D.PR.map(function(x){return (0,jsx.jsx)("option",{className:"jsx-448d443c98f438e",children:x},x)})})}),
 (0,jsx.jsx)(Field,{label:"Headline",children:(0,jsx.jsx)("div",{className:"jsx-448d443c98f438e flex overflow-hidden rounded-lg border border-slate-200",children:VIEWS.map(function(v){return (0,jsx.jsx)("button",{onClick:function(){setView(v.key)},className:"jsx-448d443c98f438e "+("px-4 py-1.5 text-sm font-medium "+(view===v.key?"bg-core-navy text-white":"bg-white text-slate-600 hover:bg-slate-50")),children:v.label},v.key)})})}),
 (0,jsx.jsx)("button",{onClick:function(){setShowRollup(function(v){return!v})},className:"jsx-448d443c98f438e ml-auto "+("btn "+(showRollup?"btn-on":"")),children:"Roll-up"}),
 !ready&&(0,jsx.jsx)("span",{className:"jsx-448d443c98f438e text-xs text-slate-400",children:"loading saved state..."})]}),
-(0,jsx.jsx)("div",{ref:panRef,className:"jsx-448d443c98f438e pan overflow-x-auto rounded-xl border border-slate-200 bg-white",children:(0,jsx.jsxs)("table",{className:"jsx-448d443c98f438e w-full min-w-[1470px] table-fixed border-collapse text-sm",children:[
+(0,jsx.jsx)("div",{ref:panRef,className:"jsx-448d443c98f438e pan overflow-x-auto rounded-xl border border-slate-200 bg-white",children:(0,jsx.jsxs)("table",{className:"jsx-448d443c98f438e w-full min-w-[1420px] table-fixed border-collapse text-sm",children:[
 (0,jsx.jsx)("thead",{className:"jsx-448d443c98f438e",children:(0,jsx.jsxs)("tr",{className:"jsx-448d443c98f438e border-b border-slate-200 bg-slate-50 text-left",children:[
-(0,jsx.jsx)("th",{className:"jsx-448d443c98f438e sticky left-0 z-10 w-[320px] bg-slate-50 px-4 py-3 font-semibold text-slate-600",children:"Metric"}),
+(0,jsx.jsx)("th",{className:"jsx-448d443c98f438e sticky left-0 z-10 w-[270px] bg-slate-50 px-4 py-3 font-semibold text-slate-600",children:"Metric"}),
 showRollup&&(0,jsx.jsxs)("th",{className:"jsx-448d443c98f438e w-[230px] px-4 py-3 text-right align-top font-bold text-core-navy",children:[(0,jsx.jsx)("span",{className:"jsx-448d443c98f438e block",children:level}),(0,jsx.jsx)("span",{className:"jsx-448d443c98f438e ml-auto block max-w-[11rem] text-xs font-normal leading-tight text-slate-400",children:"Portfolio"})]}),
 configs.map(function(c){return(0,jsx.jsxs)("th",{className:"jsx-448d443c98f438e w-[230px] px-4 py-3 text-right align-top font-bold text-core-navy",children:[
 (0,jsx.jsx)("span",{className:"jsx-448d443c98f438e block",children:c.name}),
@@ -152,7 +151,7 @@ source&&(0,jsx.jsx)("div",{onClick:function(){setSource(null)},className:"jsx-44
 (0,jsx.jsxs)("p",{className:"jsx-448d443c98f438e text-sm text-slate-500",children:["Application: ",source.app]}),
 (0,jsx.jsx)("div",{className:"jsx-448d443c98f438e mt-4 rounded-lg bg-slate-50 p-3 text-sm text-slate-700",children:source.text}),
 (0,jsx.jsx)("button",{onClick:function(){setSource(null)},className:"jsx-448d443c98f438e mt-4 w-full rounded-lg bg-core-navy px-4 py-2 text-sm font-semibold text-white hover:bg-core-blue",children:"Close"})]})}),
-(0,jsx.jsx)(SJ(),{id:"448d443c98f438e",children:".btn.jsx-448d443c98f438e{border:1px solid#cbd5e1;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;padding:7px 12px;font-size:13px;background:white;font-weight:500}.btn-on.jsx-448d443c98f438e{background:#0a1f5c;color:white;border-color:#0a1f5c}"})]})}
+(0,jsx.jsx)(SJ(),{id:"448d443c98f438e",children:".btn.jsx-448d443c98f438e{border:1px solid var(--v-border);border-radius:8px;padding:7px 12px;font-size:13px;background:var(--v-surface);color:var(--v-t3);font-weight:500}.btn-on.jsx-448d443c98f438e{background:var(--v-brand);color:var(--v-onbrand);border-color:var(--v-brand)}"})]})}
 function Value(props){var cell=props.cell,parts=String(cell.text).split(DSEP);
 return(0,jsx.jsxs)("span",{className:"whitespace-nowrap "+(cell.rag?RAG_CLASS[cell.rag]:props.plain),children:[parts[0],
 parts[1]?(0,jsx.jsx)("span",{className:"ml-1 font-normal "+(cell.deltaRag?DELTA_CLASS[cell.deltaRag]:"text-slate-400"),children:"("+parts[1]+")"}):null]})}
@@ -180,7 +179,7 @@ var label=metric.label;
 var rollupCell=metric.rollupCell?metric.rollupCell(configs,derivedList,period):metric.noRollup?{text:""}:rollupMetric(metric.cell,configs,derived,period);
 if(isPeriod&&metric.rollupChangeCell)rollupCell=metric.rollupChangeCell(configs,derivedList,period);
 return(0,jsx.jsxs)("tr",{className:"border-b border-slate-100 hover:bg-slate-50/60",children:[
-(0,jsx.jsxs)("td",{className:"sticky left-0 z-10 whitespace-nowrap bg-white px-4 py-2 "+(metric.emphasis?"font-semibold text-slate-800":"text-slate-600"),children:[label,(0,jsx.jsx)("span",{className:"ml-2 text-[10px] font-normal uppercase tracking-wide "+BASIS_CLASS[metric.basis],children:metric.basis})]}),
+(0,jsx.jsxs)("td",{title:label,className:"metric-cell sticky left-0 z-10 whitespace-nowrap bg-white px-4 py-2 "+(metric.emphasis?"font-semibold text-slate-800":"text-slate-600"),children:[(0,jsx.jsx)("span",{children:label}),(0,jsx.jsx)("span",{className:"text-[10px] font-normal uppercase tracking-wide "+BASIS_CLASS[metric.basis],children:metric.basis})]}),
 showRollup&&(0,jsx.jsx)("td",{className:"px-4 py-2 text-right text-slate-400",children:rollupCell.text}),
 configs.map(function(c){var cell=read(c,derived[c.appId],period);if(isPeriod&&metric.change)cell={text:cell.text,rag:metric.cell(c,derived[c.appId],period).rag,deltaRag:cell.deltaRag};
 return(0,jsx.jsxs)("td",{className:"cursor-pointer px-4 py-2 text-right hover:bg-sky-50",onClick:function(){onSource({metric:label,app:c.name,text:metric.source})},children:[
