@@ -93,10 +93,24 @@ var periodTuple=(0,React.useState)("Last Month"),period=periodTuple[0],setPeriod
 var viewTuple=(0,React.useState)("completion"),view=viewTuple[0],setView=viewTuple[1];
 var rollupTuple=(0,React.useState)(!0),showRollup=rollupTuple[0],setShowRollup=rollupTuple[1];
 var sourceTuple=(0,React.useState)(null),source=sourceTuple[0],setSource=sourceTuple[1];
+var panRef=(0,React.useRef)(null);
+(0,React.useEffect)(function(){
+var el=panRef.current;if(!el)return;
+var down=false,moved=false,x0=0,left0=0;
+function onDown(e){if(0!==e.button)return;if(e.target.closest("select,input,button,option"))return;down=true;moved=false;x0=e.clientX;left0=el.scrollLeft}
+function onMove(e){if(!down)return;var dx=e.clientX-x0;if(!moved&&Math.abs(dx)>4){moved=true;el.classList.add("is-grabbing")}if(moved){el.scrollLeft=left0-dx;e.preventDefault()}}
+function onUp(){down=false;el.classList.remove("is-grabbing");if(moved)setTimeout(function(){moved=false},0)}
+function onClick(e){if(moved){e.stopPropagation();e.preventDefault()}}
+el.addEventListener("pointerdown",onDown);
+window.addEventListener("pointermove",onMove);
+window.addEventListener("pointerup",onUp);
+el.addEventListener("click",onClick,true);
+return function(){el.removeEventListener("pointerdown",onDown);window.removeEventListener("pointermove",onMove);window.removeEventListener("pointerup",onUp);el.removeEventListener("click",onClick,true)}
+},[]);
 var derived=(0,React.useMemo)(function(){var map={};return configs.forEach(function(c){map[c.appId]=F.W$(c,rows)}),map},[configs,rows]);
 var toggle=function(key){setCollapsed(function(prev){var next=Object.assign({},prev);return next[key]=!prev[key],next})};
 return(0,jsx.jsxs)("div",{className:"jsx-448d443c98f438e mx-auto max-w-7xl px-6 py-8",children:[
-(0,jsx.jsx)("h1",{className:"jsx-448d443c98f438e mb-1 text-2xl font-extrabold text-core-navy",children:"Core4 Software Delivery Dashboard"}),
+(0,jsx.jsx)("h1",{className:"jsx-448d443c98f438e mb-1 text-2xl font-extrabold text-core-navy",children:"Software Delivery Dashboard"}),
 (0,jsx.jsx)("p",{className:"jsx-448d443c98f438e mb-5 text-sm text-slate-500",children:"Scope, quality, time and cost across critical applications. Expand a category for its metrics."}),
 (0,jsx.jsxs)("div",{className:"jsx-448d443c98f438e mb-4 flex flex-wrap items-end gap-4 rounded-xl border border-slate-200 bg-white p-4",children:[
 (0,jsx.jsx)(Field,{label:"Level",children:(0,jsx.jsx)("select",{value:level,onChange:function(e){setLevel(e.target.value)},className:"jsx-448d443c98f438e input",children:D.HJ.map(function(l){return (0,jsx.jsx)("option",{value:l,className:"jsx-448d443c98f438e",children:l},l)})})}),
@@ -104,7 +118,7 @@ return(0,jsx.jsxs)("div",{className:"jsx-448d443c98f438e mx-auto max-w-7xl px-6 
 (0,jsx.jsx)(Field,{label:"Headline",children:(0,jsx.jsx)("div",{className:"jsx-448d443c98f438e flex overflow-hidden rounded-lg border border-slate-200",children:VIEWS.map(function(v){return (0,jsx.jsx)("button",{onClick:function(){setView(v.key)},className:"jsx-448d443c98f438e "+("px-4 py-1.5 text-sm font-medium "+(view===v.key?"bg-core-navy text-white":"bg-white text-slate-600 hover:bg-slate-50")),children:v.label},v.key)})})}),
 (0,jsx.jsx)("button",{onClick:function(){setShowRollup(function(v){return!v})},className:"jsx-448d443c98f438e ml-auto "+("btn "+(showRollup?"btn-on":"")),children:"Roll-up"}),
 !ready&&(0,jsx.jsx)("span",{className:"jsx-448d443c98f438e text-xs text-slate-400",children:"loading saved state..."})]}),
-(0,jsx.jsx)("div",{className:"jsx-448d443c98f438e overflow-x-auto rounded-xl border border-slate-200 bg-white",children:(0,jsx.jsxs)("table",{className:"jsx-448d443c98f438e w-full min-w-[1300px] table-fixed border-collapse text-sm",children:[
+(0,jsx.jsx)("div",{ref:panRef,className:"jsx-448d443c98f438e pan overflow-x-auto rounded-xl border border-slate-200 bg-white",children:(0,jsx.jsxs)("table",{className:"jsx-448d443c98f438e w-full min-w-[1300px] table-fixed border-collapse text-sm",children:[
 (0,jsx.jsx)("thead",{className:"jsx-448d443c98f438e",children:(0,jsx.jsxs)("tr",{className:"jsx-448d443c98f438e border-b border-slate-200 bg-slate-50 text-left",children:[
 (0,jsx.jsx)("th",{className:"jsx-448d443c98f438e sticky left-0 z-10 w-[300px] bg-slate-50 px-4 py-3 font-semibold text-slate-600",children:"Metric"}),
 showRollup&&(0,jsx.jsxs)("th",{className:"jsx-448d443c98f438e w-[200px] px-4 py-3 text-right align-top font-bold text-core-navy",children:[(0,jsx.jsx)("span",{className:"jsx-448d443c98f438e block",children:level}),(0,jsx.jsx)("span",{className:"jsx-448d443c98f438e ml-auto block max-w-[11rem] text-xs font-normal leading-tight text-slate-400",children:"Portfolio"})]}),
