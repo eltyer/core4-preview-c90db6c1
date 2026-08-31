@@ -70,14 +70,19 @@ var children=props.children;
 var stateTuple=(0,React.useState)(initialState),state=stateTuple[0],setState=stateTuple[1];
 var readyTuple=(0,React.useState)(!1),ready=readyTuple[0],setReady=readyTuple[1];
 (0,React.useEffect)(function(){
-var root=document.documentElement,btn=document.getElementById("theme-toggle");
-function paint(mode){root.setAttribute("data-theme",mode);if(btn)btn.textContent="dark"===mode?"Light":"Dark"}
-var start="dark";try{start=localStorage.getItem("core4-theme")||(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}catch(e){start="light"}
-paint(start);
-if(!btn)return;
-function toggle(){var next="dark"===root.getAttribute("data-theme")?"light":"dark";paint(next);try{localStorage.setItem("core4-theme",next)}catch(e){}}
-btn.addEventListener("click",toggle);
-return function(){btn.removeEventListener("click",toggle)}
+var root=document.documentElement,opts=[].slice.call(document.querySelectorAll("[data-theme-set]"));
+var mq=window.matchMedia?window.matchMedia("(prefers-color-scheme: dark)"):null;
+function read(){try{var v=localStorage.getItem("core4-theme");return "light"===v||"dark"===v||"system"===v?v:"system"}catch(e){return "system"}}
+function paint(pref){
+root.setAttribute("data-theme","system"===pref?(mq&&mq.matches?"dark":"light"):pref);
+opts.forEach(function(b){b.classList.toggle("is-on",b.getAttribute("data-theme-set")===pref)});
+}
+paint(read());
+function onClick(e){var pref=e.currentTarget.getAttribute("data-theme-set");try{localStorage.setItem("core4-theme",pref)}catch(err){}paint(pref)}
+opts.forEach(function(b){b.addEventListener("click",onClick)});
+function onSystem(){if("system"===read())paint("system")}
+mq&&mq.addEventListener&&mq.addEventListener("change",onSystem);
+return function(){opts.forEach(function(b){b.removeEventListener("click",onClick)});mq&&mq.removeEventListener&&mq.removeEventListener("change",onSystem)}
 },[]);
 (0,React.useEffect)(function(){try{var saved=localStorage.getItem(STORAGE_KEY);saved&&setState(JSON.parse(saved))}catch(e){}setReady(!0)},[]);
 (0,React.useEffect)(function(){if(ready)try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){}},[state,ready]);
