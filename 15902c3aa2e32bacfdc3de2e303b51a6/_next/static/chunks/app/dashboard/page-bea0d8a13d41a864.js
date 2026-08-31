@@ -112,7 +112,9 @@ el.scrollLeft=left0-dx;
 if(e.cancelable)e.preventDefault();
 }
 function onScroll(){el.parentNode&&el.parentNode.classList.toggle("is-scrolled",el.scrollLeft>0)}
-el.addEventListener("scroll",onScroll);onScroll();
+function measure(){if(!el.parentNode||!el.parentNode.style)return;var h=el.offsetHeight-el.clientHeight;el.parentNode.style.setProperty("--scrollbar-h",(h>0?h:0)+"px")}
+el.addEventListener("scroll",onScroll);onScroll();measure();
+window.addEventListener("resize",measure);
 function onUp(){if(null===id)return;try{el.releasePointerCapture&&el.releasePointerCapture(id)}catch(err){}id=null;el.classList.remove("is-grabbing")}
 function onClick(e){if(moved){moved=false;e.stopPropagation();e.preventDefault()}}
 function onDragStart(e){if(moved)e.preventDefault()}
@@ -127,7 +129,7 @@ return function(){
 el.removeEventListener("pointerdown",onDown);el.removeEventListener("pointermove",onMove);
 el.removeEventListener("pointerup",onUp);el.removeEventListener("pointercancel",onUp);
 window.removeEventListener("pointerup",onUp);el.removeEventListener("click",onClick,true);
-el.removeEventListener("dragstart",onDragStart);el.removeEventListener("scroll",onScroll)}
+el.removeEventListener("dragstart",onDragStart);el.removeEventListener("scroll",onScroll);window.removeEventListener("resize",measure)}
 },[]);
 var derived=(0,React.useMemo)(function(){var map={};return configs.forEach(function(c){map[c.appId]=F.W$(c,rows)}),map},[configs,rows]);
 var toggle=function(key){setCollapsed(function(prev){var next=Object.assign({},prev);return next[key]=!prev[key],next})};
