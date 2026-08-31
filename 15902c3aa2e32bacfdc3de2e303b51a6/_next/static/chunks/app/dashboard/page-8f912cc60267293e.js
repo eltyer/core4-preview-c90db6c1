@@ -94,7 +94,7 @@ metrics:[{label:"Planned deadline",basis:"agreed",noRollup:!0,source:"Configurat
 function DashboardPage(){
 var store=(0,Store.o)(),configs=store.configs,rows=store.rows,ready=store.ready;
 var collapsedTuple=(0,React.useState)({}),collapsed=collapsedTuple[0],setCollapsed=collapsedTuple[1];
-var levelTuple=(0,React.useState)("IPF"),level=levelTuple[0],setLevel=levelTuple[1];
+var levelTuple=(0,React.useState)("Airside"),level=levelTuple[0],setLevel=levelTuple[1];
 var periodTuple=(0,React.useState)("Last Month"),period=periodTuple[0],setPeriod=periodTuple[1];
 var viewTuple=(0,React.useState)("completion"),view=viewTuple[0],setView=viewTuple[1];
 var rollupTuple=(0,React.useState)(!0),showRollup=rollupTuple[0],setShowRollup=rollupTuple[1];
