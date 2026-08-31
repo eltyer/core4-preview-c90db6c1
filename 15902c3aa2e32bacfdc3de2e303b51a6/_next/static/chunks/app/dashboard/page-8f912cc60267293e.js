@@ -22,9 +22,13 @@ function shiftDate(iso,days){return new Date(Date.parse(iso)+days*DAY).toISOStri
 var GROUPS=[
 {key:"overview",title:"1. Overview",color:"bg-slate-100 text-slate-700",
 completion:function(config,d){return{text:d.totalFp+" FP",sub:config.overview.developers+" developers"}},
-change:function(config,d){return{text:d.totalFp+" FP",sub:config.overview.developers+" developers"}},
+change:function(config,d,period){
+var moved=F.hy(config,period).scopeFp||0,prev=d.totalFp-moved;
+return{text:0===moved?"no scope change":abs(moved)+" FP "+(moved>0?"added":"removed"),sub:prev+" FP → "+d.totalFp+" FP",rag:dirRag(-moved)}},
 rollupCompletion:function(configs,derived){return{text:derived.reduce(function(a,d){return a+d.totalFp},0)+" FP",sub:configs.reduce(function(a,c){return a+c.overview.developers},0)+" developers"}},
-rollupChange:function(configs,derived){return{text:derived.reduce(function(a,d){return a+d.totalFp},0)+" FP",sub:configs.reduce(function(a,c){return a+c.overview.developers},0)+" developers"}},
+rollupChange:function(configs,derived,period){
+var moved=configs.reduce(function(a,c){return a+(F.hy(c,period).scopeFp||0)},0),total=derived.reduce(function(a,d){return a+d.totalFp},0);
+return{text:0===moved?"no scope change":abs(moved)+" FP "+(moved>0?"added":"removed"),sub:total-moved+" FP → "+total+" FP",rag:dirRag(-moved)}},
 metrics:[
 {label:"Contract type",source:"Configuration, contract-type toggle",cell:function(c){return{text:"fp"===c.contractType?"FP-based":"Hour-based"}}},
 {label:"FP method",source:"Configuration, FP counting method",cell:function(c){return{text:c.fpMethod}}},
@@ -95,7 +99,7 @@ metrics:[
 {key:"faster",title:"5. Faster (Time & Scope)",color:"bg-sky-50 text-sky-800",
 completion:function(config,d){
 var slack=d.forecastSlackDays;
-return{text:F.G$(d.forecastDate),sub:0===slack?"on time against "+F.G$(config.baselineDeadline):abs(slack)+" "+unit(slack,"day","days")+" "+(slack>0?"early":"late")+" against "+F.G$(config.baselineDeadline),rag:F.wq(slack,config.thresholds.faster)}},
+return{text:F.G$(d.forecastDate),sub:0===slack?"on time against "+F.G$(config.baselineDeadline):abs(slack)+" "+unit(slack,"day","days")+" "+(slack>0?"early":"late")+" ("+pctOf(slack,d.plannedDays)+") against "+F.G$(config.baselineDeadline),rag:F.wq(slack,config.thresholds.faster)}},
 change:function(config,d,period){
 var h=F.hy(config,period),prevSlack=d.forecastSlackDays-h.slackDays;
 var prevForecast=shiftDate(config.baselineDeadline,-prevSlack);
