@@ -1,6 +1,7 @@
 (self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[702],{1113:function(e,t,a){Promise.resolve().then(a.bind(a,1720))},1720:function(__mod__,t,__wr__){"use strict";__wr__.r(t),__wr__.d(t,{default:function(){return DashboardPage}});var jsx=__wr__(7437),styledJsx=__wr__(29),SJ=__wr__.n(styledJsx),React=__wr__(2265),Store=__wr__(9835),D=__wr__(1930),F=__wr__(2369);
 var DAY=864e5;
 var RAG_CLASS={good:"text-good font-semibold",warn:"text-warn font-semibold",bad:"text-bad font-semibold"};
+var BASIS_CLASS={agreed:"text-slate-400","to date":"text-slate-400",period:"text-amber-500/70",forecast:"text-core-accent/70"};
 var VIEWS=[{key:"completion",label:"At completion"},{key:"period",label:"This period"}];
 var PERIOD_LABEL={"Last Month":"last month","Last Quarter":"last quarter","Last PI":"last PI",YTD:"year to date"};
 var COST_NOTE="Cost covers build and built-in testing only. Separate test phases, licences and run/maintenance are not included in these figures.";
@@ -24,17 +25,12 @@ var GROUPS=[
 completion:function(config,d){return{text:d.totalFp+" FP",sub:config.overview.developers+" developers"}},
 change:function(config,d,period){
 var moved=F.hy(config,period).scopeFp||0,prev=d.totalFp-moved;
-return{text:0===moved?"no scope change":abs(moved)+" FP "+(moved>0?"added":"removed"),sub:prev+" FP → "+d.totalFp+" FP",rag:dirRag(-moved)}},
+return{text:0===moved?"no change":abs(moved)+" FP "+(moved>0?"added":"removed"),sub:prev+" FP → "+d.totalFp+" FP",rag:dirRag(-moved)}},
 rollupCompletion:function(configs,derived){return{text:derived.reduce(function(a,d){return a+d.totalFp},0)+" FP",sub:configs.reduce(function(a,c){return a+c.overview.developers},0)+" developers"}},
 rollupChange:function(configs,derived,period){
 var moved=configs.reduce(function(a,c){return a+(F.hy(c,period).scopeFp||0)},0),total=derived.reduce(function(a,d){return a+d.totalFp},0);
-return{text:0===moved?"no scope change":abs(moved)+" FP "+(moved>0?"added":"removed"),sub:total-moved+" FP → "+total+" FP",rag:dirRag(-moved)}},
-metrics:[
-{label:"Contract type",source:"Configuration, contract-type toggle",cell:function(c){return{text:"fp"===c.contractType?"FP-based":"Hour-based"}}},
-{label:"FP method",source:"Configuration, FP counting method",cell:function(c){return{text:c.fpMethod}}},
-{label:"Lines of Code",source:"TiCS (interface)",cell:function(c){return{text:c.overview.loc.toLocaleString("en-US")}}},
-{label:"Complexity Index",source:"TiCS (interface)",cell:function(c){return{text:c.overview.complexityIndex.toFixed(1)}}},
-{label:"# Developers",source:"Oracle / roster",cell:function(c){return{text:String(c.overview.developers)}}}]},
+return{text:0===moved?"no change":abs(moved)+" FP "+(moved>0?"added":"removed"),sub:total-moved+" FP → "+total+" FP",rag:dirRag(-moved)}},
+metrics:[{label:"Contract type",basis:"agreed",noRollup:!0,source:"Configuration, contract-type toggle",cell:function(c){return{text:"fp"===c.contractType?"FP-based":"Hour-based"}}},{label:"FP method",basis:"agreed",noRollup:!0,source:"Configuration, FP counting method",cell:function(c){return{text:c.fpMethod}}},{label:"Lines of Code",basis:"to date",source:"TiCS (interface)",cell:function(c){return{text:c.overview.loc.toLocaleString("en-US")}}},{label:"Complexity Index",basis:"to date",source:"TiCS (interface)",cell:function(c){return{text:c.overview.complexityIndex.toFixed(1)}}},{label:"# Developers",basis:"to date",source:"Oracle / roster",cell:function(c){return{text:String(c.overview.developers)}}},{label:"Scope moved",basis:"period",noRollup:!0,source:"Derived: function points added or removed inside the selected window",cell:function(c,d,period){var m=F.hy(c,period).scopeFp||0;return{text:0===m?"no change":abs(m)+" FP "+(m>0?"added":"removed"),rag:dirRag(-m)}}},{label:"Total scope",basis:"forecast",emphasis:!0,source:"Derived: sum of all counted FP, excluding deleted functions",cell:function(c,d){return{text:d.totalFp+" FP"}}}]},
 {key:"better",title:"2. Better (Quality)",color:"bg-emerald-50 text-emerald-800",
 completion:function(config,d){
 var target=config.qualityTarget,floor=F.gF(target),g=F.b9(d.betterScore);
@@ -42,38 +38,28 @@ return{text:g+" ("+d.betterScore+"%)",sub:gapWord(d.betterScore-floor,"pt","pts"
 change:function(config,d,period){
 var h=F.hy(config,period),prev=d.betterScore-h.better,gNow=F.b9(d.betterScore),gPrev=F.b9(prev);
 var move=prev+"% → "+d.betterScore+"%";
-return{text:moveWord(h.better,"pt","pts","better","worse","unchanged"),sub:gPrev!==gNow?gPrev+" → "+gNow+" ("+move+")":move,rag:dirRag(h.better)}},
+return{text:moveWord(h.better,"pt","pts","higher","lower","no change"),sub:gPrev!==gNow?gPrev+" → "+gNow+" ("+move+")":move,rag:dirRag(h.better)}},
 rollupCompletion:function(configs,derived){
 var score=Math.round(avg(derived.map(function(d){return d.betterScore}))),floor=Math.round(avg(configs.map(function(c){return F.gF(c.qualityTarget)})));
 return{text:F.b9(score)+" ("+score+"%)",sub:gapWord(score-floor,"pt","pts","above target","below target","on target",F.b9(floor),floor)}},
 rollupChange:function(configs,derived,period){
 var score=Math.round(avg(derived.map(function(d){return d.betterScore}))),delta=Math.round(avg(configs.map(function(c){return F.hy(c,period).better})));
-return{text:moveWord(delta,"pt","pts","better","worse","unchanged"),sub:score-delta+"% → "+score+"% portfolio average",rag:dirRag(delta)}},
-metrics:[
-{label:"Security (ISO 5055)",source:"TiCS (interface)",emphasis:!0,cell:function(c){return{text:pct(c.better.security),rag:F.wq(c.better.security,c.thresholds.better)}}},
-{label:"Maintainability (ISO 5055)",source:"TiCS (interface)",cell:function(c){return{text:pct(c.better.maintainability),rag:F.wq(c.better.maintainability,c.thresholds.better)}}},
-{label:"Reliability (ISO 5055)",source:"TiCS (interface)",cell:function(c){return{text:pct(c.better.reliability),rag:F.wq(c.better.reliability,c.thresholds.better)}}},
-{label:"Efficiency (ISO 5055)",source:"TiCS (interface)",cell:function(c){return{text:pct(c.better.efficiency),rag:F.wq(c.better.efficiency,c.thresholds.better)}}},
-{label:"Functional suitability",source:"TiCS (interface)",cell:function(c){return{text:pct(c.better.functionalSuitability),rag:F.wq(c.better.functionalSuitability,c.thresholds.better)}}},
-{label:"MTBF",source:"Jira, incident tickets (open/close)",cell:function(c){return{text:c.better.mtbf+" days"}}},
-{label:"MTTR",source:"Jira, incident tickets (open/close)",cell:function(c){return{text:c.better.mttr+" hrs"}}}]},
+return{text:moveWord(delta,"pt","pts","higher","lower","no change"),sub:score-delta+"% → "+score+"% portfolio average",rag:dirRag(delta)}},
+metrics:[{label:"Agreed quality grade",basis:"agreed",source:"Configuration, agreed quality grade for this application",cell:function(c){return{text:c.qualityTarget+" ("+F.gF(c.qualityTarget)+"%)"}}},{label:"Security (ISO 5055)",basis:"to date",emphasis:!0,source:"TiCS (interface)",cell:function(c){return{text:pct(c.better.security),rag:F.wq(c.better.security,c.thresholds.better)}}},{label:"Maintainability (ISO 5055)",basis:"to date",source:"TiCS (interface)",cell:function(c){return{text:pct(c.better.maintainability),rag:F.wq(c.better.maintainability,c.thresholds.better)}}},{label:"Reliability (ISO 5055)",basis:"to date",source:"TiCS (interface)",cell:function(c){return{text:pct(c.better.reliability),rag:F.wq(c.better.reliability,c.thresholds.better)}}},{label:"Efficiency (ISO 5055)",basis:"to date",source:"TiCS (interface)",cell:function(c){return{text:pct(c.better.efficiency),rag:F.wq(c.better.efficiency,c.thresholds.better)}}},{label:"Functional suitability",basis:"to date",source:"TiCS (interface)",cell:function(c){return{text:pct(c.better.functionalSuitability),rag:F.wq(c.better.functionalSuitability,c.thresholds.better)}}},{label:"MTBF",basis:"to date",source:"Jira, incident tickets (open/close)",cell:function(c){return{text:c.better.mtbf+" days"}}},{label:"MTTR",basis:"to date",source:"Jira, incident tickets (open/close)",cell:function(c){return{text:c.better.mttr+" hrs"}}},{label:"Score moved",basis:"period",noRollup:!0,source:"Derived: change in the overall quality score inside the selected window",cell:function(c,d,period){var h=F.hy(c,period);return{text:moveWord(h.better,"pt","pts","higher","lower","no change"),rag:dirRag(h.better)}}},{label:"Quality at completion",basis:"forecast",emphasis:!0,source:"Derived: average of the five ISO 5055 scores. Quality has no separate forecast model, so today's score is the forecast",cell:function(c,d){var g=F.b9(d.betterScore);return{text:g+" ("+d.betterScore+"%)",rag:F.I(g)>=F.I(c.qualityTarget)?"good":F.I(g)===F.I(c.qualityTarget)-1?"warn":"bad"}}}]},
 {key:"happier",title:"3. Happier (Happiness)",color:"bg-amber-50 text-amber-800",
 completion:function(config,d){
 var target=config.thresholds.happier.green,gap=Math.round(10*(d.happierScore-target))/10;
 return{text:d.happierScore.toFixed(1),sub:0===gap?"on target "+target.toFixed(1):fixed1(abs(gap))+" "+(gap>0?"above target ":"below target ")+target.toFixed(1)+" ("+pctOf(gap,target)+")",rag:F.wq(d.happierScore,config.thresholds.happier)}},
 change:function(config,d,period){
 var h=F.hy(config,period),prev=Math.round(10*(d.happierScore-h.happier))/10;
-return{text:0===h.happier?"unchanged":fixed1(abs(h.happier))+" "+(h.happier>0?"better":"worse"),sub:prev.toFixed(1)+" → "+d.happierScore.toFixed(1),rag:dirRag(h.happier)}},
+return{text:0===h.happier?"no change":fixed1(abs(h.happier))+" "+(h.happier>0?"higher":"lower"),sub:prev.toFixed(1)+" → "+d.happierScore.toFixed(1),rag:dirRag(h.happier)}},
 rollupCompletion:function(configs,derived){
 var score=Math.round(10*avg(derived.map(function(d){return d.happierScore})))/10,target=Math.round(10*avg(configs.map(function(c){return c.thresholds.happier.green})))/10,gap=Math.round(10*(score-target))/10;
 return{text:score.toFixed(1),sub:0===gap?"on target "+target.toFixed(1):fixed1(abs(gap))+" "+(gap>0?"above target ":"below target ")+target.toFixed(1)+" ("+pctOf(gap,target)+")"}},
 rollupChange:function(configs,derived,period){
 var score=Math.round(10*avg(derived.map(function(d){return d.happierScore})))/10,delta=Math.round(10*avg(configs.map(function(c){return F.hy(c,period).happier})))/10;
-return{text:0===delta?"unchanged":fixed1(abs(delta))+" "+(delta>0?"better":"worse"),sub:(Math.round(10*(score-delta))/10).toFixed(1)+" → "+score.toFixed(1)+" portfolio average",rag:dirRag(delta)}},
-metrics:[
-{label:"Team happiness",source:"Happiness survey (per sprint)",emphasis:!0,cell:function(c){return{text:c.happier.team.toFixed(1),rag:F.wq(c.happier.team,c.thresholds.happier)}}},
-{label:"Collaboration happiness",source:"Happiness survey (per sprint)",cell:function(c){return{text:c.happier.collaboration.toFixed(1),rag:F.wq(c.happier.collaboration,c.thresholds.happier)}}},
-{label:"Usage happiness",source:"Happiness survey (per sprint)",cell:function(c){return{text:c.happier.usage.toFixed(1),rag:F.wq(c.happier.usage,c.thresholds.happier)}}}]},
+return{text:0===delta?"no change":fixed1(abs(delta))+" "+(delta>0?"higher":"lower"),sub:(Math.round(10*(score-delta))/10).toFixed(1)+" → "+score.toFixed(1)+" portfolio average",rag:dirRag(delta)}},
+metrics:[{label:"Agreed target",basis:"agreed",source:"Configuration, RAG threshold for Happier",cell:function(c){return{text:c.thresholds.happier.green.toFixed(1)}}},{label:"Team happiness",basis:"to date",emphasis:!0,source:"Happiness survey (per sprint)",cell:function(c){return{text:c.happier.team.toFixed(1),rag:F.wq(c.happier.team,c.thresholds.happier)}}},{label:"Collaboration happiness",basis:"to date",source:"Happiness survey (per sprint)",cell:function(c){return{text:c.happier.collaboration.toFixed(1),rag:F.wq(c.happier.collaboration,c.thresholds.happier)}}},{label:"Usage happiness",basis:"to date",source:"Happiness survey (per sprint)",cell:function(c){return{text:c.happier.usage.toFixed(1),rag:F.wq(c.happier.usage,c.thresholds.happier)}}},{label:"Score moved",basis:"period",noRollup:!0,source:"Derived: change in the average happiness score inside the selected window",cell:function(c,d,period){var h=F.hy(c,period);return{text:0===h.happier?"no change":fixed1(abs(h.happier))+" "+(h.happier>0?"higher":"lower"),rag:dirRag(h.happier)}}},{label:"Happiness at completion",basis:"forecast",emphasis:!0,source:"Derived: average of the three survey scores. Happiness has no separate forecast model, so today's score is the forecast",cell:function(c,d){return{text:d.happierScore.toFixed(1),rag:F.wq(d.happierScore,c.thresholds.happier)}}}]},
 {key:"cheaper",title:"4. Cheaper (Cost)",color:"bg-rose-50 text-rose-800",note:COST_NOTE,
 completion:function(config,d){
 var vac=d.vacCost;
@@ -89,41 +75,22 @@ var spend=configs.reduce(function(a,c,i){return a+derived[i].actuals*F.hy(c,peri
 var eac=derived.reduce(function(a,d){return a+d.eac},0);
 var prevEac=configs.reduce(function(a,c,i){return a+derived[i].eac-derived[i].eac*(F.hy(c,period).eacShiftShare||0)},0);
 return{text:F.s7(spend)+" spent",sub:"forecast "+F.s7(prevEac)+" → "+F.s7(eac)}},
-metrics:[
-{label:"Actuals to date",source:"Hour: Oracle x rate. FP: sum of function prices",cell:function(c,d){return{text:F.s7(d.actuals)}}},
-{label:"Estimate to Complete",source:"Hour: estimate (complexity x rate x change factor). FP: agreed price after change factor",cell:function(c,d){return{text:F.s7(d.etc),sub:"fp"===c.contractType?"agreed":"estimate"}}},
-{label:"Forecast total spend (EAC)",source:"Derived: Actuals + Estimate to Complete",emphasis:!0,cell:function(c,d){return{text:F.s7(d.eac)}}},
-{label:"Cost / FP",source:"FPA sheet (Cost divided by #FP)",emphasis:!0,cell:function(c,d){return{text:F.M1(d.costPerFp)+"/FP",rag:F.wq(d.costPerFp,c.thresholds.cheaper)}}},
-{label:"Output tariff (L3)",source:"Contract (given, FP-based)",cell:function(c){return{text:"fp"===c.contractType?F.M1(c.outputTariff)+"/FP":"n/a"}}},
-{label:"Variance at completion (VAC)",source:"Derived: Budget minus EAC, and the same gap as a share of budget",emphasis:!0,cell:function(c,d){return{text:F.s7(d.vacCost),sub:F.pP(d.vacCost,c.baselineBudget),rag:d.vacCost>=0?"good":d.vacCost>-.08*c.baselineBudget?"warn":"bad"}}}]},
+metrics:[{label:"Baseline budget",basis:"agreed",emphasis:!0,source:"Configuration, baseline budget set by the project owner",cell:function(c){return{text:F.s7(c.baselineBudget)}}},{label:"Output tariff (L3)",basis:"agreed",noRollup:!0,source:"Contract (given, FP-based)",cell:function(c){return{text:"fp"===c.contractType?F.M1(c.outputTariff)+"/FP":"n/a"}}},{label:"Actuals to date",basis:"to date",source:"Hour: Oracle x rate. FP: sum of function prices",cell:function(c,d){return{text:F.s7(d.actuals)}}},{label:"Cost / FP",basis:"to date",emphasis:!0,source:"FPA sheet (Cost divided by #FP)",cell:function(c,d){return{text:F.M1(d.costPerFp)+"/FP",rag:F.wq(d.costPerFp,c.thresholds.cheaper)}}},{label:"Spent",basis:"period",source:"Derived: share of actuals to date booked inside the selected window",cell:function(c,d,period){return{text:F.s7(d.actuals*F.hy(c,period).spendShare)}}},{label:"Forecast moved",basis:"period",noRollup:!0,source:"Derived: movement of the forecast total spend inside the selected window",cell:function(c,d,period){var mv=d.eac*(F.hy(c,period).eacShiftShare||0);return{text:0===Math.round(mv)?"no change":F.s7(abs(mv))+" "+(mv>0?"higher":"lower"),rag:dirRag(-mv)}}},{label:"Estimate to Complete",basis:"forecast",source:"Hour: estimate (complexity x rate x change factor). FP: agreed price after change factor",cell:function(c,d){return{text:F.s7(d.etc),sub:"fp"===c.contractType?"agreed":"estimate"}}},{label:"Forecast total spend (EAC)",basis:"forecast",emphasis:!0,source:"Derived: Actuals + Estimate to Complete",cell:function(c,d){return{text:F.s7(d.eac)}}},{label:"Variance at completion (VAC)",basis:"forecast",emphasis:!0,source:"Derived: Budget minus EAC, and the same gap as a share of budget",cell:function(c,d){return{text:F.s7(d.vacCost),sub:pctOf(d.vacCost,c.baselineBudget)+(d.vacCost>=0?" under":" over"),rag:d.vacCost>=0?"good":d.vacCost>-.08*c.baselineBudget?"warn":"bad"}}}]},
 {key:"faster",title:"5. Faster (Time & Scope)",color:"bg-sky-50 text-sky-800",
 completion:function(config,d){
 var slack=d.forecastSlackDays;
-return{text:F.G$(d.forecastDate),sub:0===slack?"on time against "+F.G$(config.baselineDeadline):abs(slack)+" "+unit(slack,"day","days")+" "+(slack>0?"early":"late")+" ("+pctOf(slack,d.plannedDays)+") against "+F.G$(config.baselineDeadline),rag:F.wq(slack,config.thresholds.faster)}},
+return{text:F.G$(d.forecastDate),sub:0===slack?"on time vs plan "+F.G$(config.baselineDeadline):abs(slack)+" "+unit(slack,"day","days")+" "+(slack>0?"early":"late")+" ("+pctOf(slack,d.plannedDays)+") vs plan "+F.G$(config.baselineDeadline),rag:F.wq(slack,config.thresholds.faster)}},
 change:function(config,d,period){
 var h=F.hy(config,period),prevSlack=d.forecastSlackDays-h.slackDays;
 var prevForecast=shiftDate(config.baselineDeadline,-prevSlack);
-return{text:moveWord(h.slackDays,"day","days","recovered","slipped","no movement"),sub:"forecast "+F.G$(prevForecast)+" → "+F.G$(d.forecastDate),rag:dirRag(h.slackDays)}},
+return{text:moveWord(h.slackDays,"day","days","earlier","later","no change"),sub:"forecast "+F.G$(prevForecast)+" → "+F.G$(d.forecastDate),rag:dirRag(h.slackDays)}},
 rollupCompletion:function(configs,derived){
 var slack=Math.round(avg(derived.map(function(d){return d.forecastSlackDays})));
 return{text:0===slack?"on time":abs(slack)+" "+unit(slack,"day","days")+" "+(slack>0?"early":"late"),sub:"average across "+derived.length+" applications",rag:slack>=0?"good":slack>-14?"warn":"bad"}},
 rollupChange:function(configs,derived,period){
 var delta=Math.round(avg(configs.map(function(c){return F.hy(c,period).slackDays})));
-return{text:moveWord(delta,"day","days","recovered","slipped","no movement"),sub:"average across "+derived.length+" applications",rag:dirRag(delta)}},
-metrics:[
-{label:"Forecast vs planned (days)",source:"Derived: forecast date vs deadline",emphasis:!0,cell:function(c,d){return{text:F.qN(d.forecastSlackDays," days"),rag:F.wq(d.forecastSlackDays,c.thresholds.faster)}}},
-{label:"Throughput",source:"FPA sheet (Deployed FP divided by time)",cell:function(c,d){return{text:d.throughput+" FP/wk"}}},
-{label:"Delivery speed (L3)",source:"FPA sheet (Deployed FP per iteration)",cell:function(c,d){return{text:d.deliverySpeed+" FP/PI"}}},
-{label:"Productivity (L3)",source:"Oracle hours divided by weekly FP",cell:function(c,d){return{text:d.productivity+" h/FP"}}},
-{label:"Baseline scope target",source:"Configuration, baseline set by the project owner",cell:function(c){return{text:c.baselineScopeFp+" FP"}}},
-{label:"Delivered FP",source:"FPA sheet (status = Deployed)",cell:function(c,d){return{text:d.deliveredFp+" FP"}}},
-{label:"Remaining scope",source:"FPA sheet (status not Deployed)",cell:function(c,d){return{text:d.remainingFp+" FP"}}},
-{label:"Descoped FP (change type Deleted)",source:"FPA sheet (change type = Deleted; still charged at the agreed removal factor)",cell:function(c,d){return{text:d.deletedFp+" FP"}}},
-{label:"Total scope (forecast)",source:"Derived: sum of all counted FP, excluding deleted functions",emphasis:!0,cell:function(c,d){return{text:d.scopeEac+" FP"}}},
-{label:"Scope variance",source:"Derived: total minus target (less scope is fine)",emphasis:!0,cell:function(c,d){
-var g=d.scopeGrowth;
-if(g<=0)return{text:g+" FP",sub:0===g?"on target":"under target",rag:"good"};
-return{text:F.qN(g," FP"),sub:"scope growth",rag:g>.05*c.baselineScopeFp?"bad":"warn"}}}]}];
+return{text:moveWord(delta,"day","days","earlier","later","no change"),sub:"average across "+derived.length+" applications",rag:dirRag(delta)}},
+metrics:[{label:"Planned deadline",basis:"agreed",noRollup:!0,source:"Configuration, target deadline set by the project owner",cell:function(c){return{text:F.G$(c.baselineDeadline)}}},{label:"Baseline scope target",basis:"agreed",source:"Configuration, baseline set by the project owner",cell:function(c){return{text:c.baselineScopeFp+" FP"}}},{label:"Delivered FP",basis:"to date",source:"FPA sheet (status = Deployed)",cell:function(c,d){return{text:d.deliveredFp+" FP"}}},{label:"Throughput",basis:"to date",source:"FPA sheet (Deployed FP divided by time)",cell:function(c,d){return{text:d.throughput+" FP/wk"}}},{label:"Delivery speed (L3)",basis:"to date",source:"FPA sheet (Deployed FP per iteration)",cell:function(c,d){return{text:d.deliverySpeed+" FP/PI"}}},{label:"Productivity (L3)",basis:"to date",source:"Oracle hours divided by weekly FP",cell:function(c,d){return{text:d.productivity+" h/FP"}}},{label:"Scope moved",basis:"period",noRollup:!0,source:"Derived: function points added or removed inside the selected window",cell:function(c,d,period){var m=F.hy(c,period).scopeFp||0;return{text:0===m?"no change":abs(m)+" FP "+(m>0?"added":"removed"),rag:dirRag(-m)}}},{label:"Forecast moved",basis:"period",noRollup:!0,source:"Derived: movement of the forecast completion date inside the selected window",cell:function(c,d,period){var h=F.hy(c,period);return{text:moveWord(h.slackDays,"day","days","earlier","later","no change"),rag:dirRag(h.slackDays)}}},{label:"Forecast completion date",basis:"forecast",emphasis:!0,noRollup:!0,source:"Derived: remaining scope divided by the run rate, from today",cell:function(c,d){return{text:F.G$(d.forecastDate)}}},{label:"Forecast vs planned (days)",basis:"forecast",emphasis:!0,source:"Derived: forecast date vs deadline",cell:function(c,d){return{text:F.qN(d.forecastSlackDays," days"),sub:pctOf(d.forecastSlackDays,d.plannedDays)+(d.forecastSlackDays>=0?" early":" late"),rag:F.wq(d.forecastSlackDays,c.thresholds.faster)}}},{label:"Remaining scope",basis:"forecast",source:"FPA sheet (status not Deployed)",cell:function(c,d){return{text:d.remainingFp+" FP"}}},{label:"Descoped FP (change type Deleted)",basis:"forecast",source:"FPA sheet (change type = Deleted; still charged at the agreed removal factor)",cell:function(c,d){return{text:d.deletedFp+" FP"}}},{label:"Total scope (forecast)",basis:"forecast",emphasis:!0,source:"Derived: sum of all counted FP, excluding deleted functions",cell:function(c,d){return{text:d.scopeEac+" FP"}}},{label:"Scope variance",basis:"forecast",emphasis:!0,source:"Derived: total minus target (less scope is fine)",cell:function(c,d){var g=d.scopeGrowth;if(g<=0)return{text:g+" FP",sub:0===g?"on target":"under target",rag:"good"};return{text:F.qN(g," FP"),sub:"scope growth",rag:g>.05*c.baselineScopeFp?"bad":"warn"}}}]}];
 function DashboardPage(){
 var store=(0,Store.o)(),configs=store.configs,rows=store.rows,ready=store.ready;
 var collapsedTuple=(0,React.useState)({}),collapsed=collapsedTuple[0],setCollapsed=collapsedTuple[1];
@@ -176,14 +143,15 @@ group.note?(0,jsx.jsx)("span",{className:"ml-1.5 cursor-help align-super text-[1
 showRollup&&(0,jsx.jsx)("td",{className:"px-4 py-2.5",children:(0,jsx.jsx)(HeadCell,{cell:rollup(configs,configs.map(function(c){return derived[c.appId]}),period)})}),
 configs.map(function(c){return(0,jsx.jsx)("td",{className:"px-4 py-2.5",children:(0,jsx.jsx)(HeadCell,{cell:head(c,derived[c.appId],period)})},c.appId)})]}),
 !collapsed&&group.metrics.map(function(metric){return(0,jsx.jsxs)("tr",{className:"border-b border-slate-100 hover:bg-slate-50/60",children:[
-(0,jsx.jsx)("td",{className:"sticky left-0 z-10 bg-white px-4 py-2 "+(metric.emphasis?"font-semibold text-slate-800":"text-slate-600"),children:metric.label}),
-showRollup&&(0,jsx.jsx)("td",{className:"px-4 py-2 text-right text-slate-400",children:rollupMetric(metric,configs,derived).text}),
-configs.map(function(c){var cell=metric.cell(c,derived[c.appId]);
+(0,jsx.jsxs)("td",{className:"sticky left-0 z-10 bg-white px-4 py-2 "+(metric.emphasis?"font-semibold text-slate-800":"text-slate-600"),children:[metric.label,(0,jsx.jsx)("span",{className:"ml-2 text-[10px] font-normal uppercase tracking-wide "+BASIS_CLASS[metric.basis],children:metric.basis})]}),
+showRollup&&(0,jsx.jsx)("td",{className:"px-4 py-2 text-right text-slate-400",children:rollupMetric(metric,configs,derived,period).text}),
+configs.map(function(c){var cell=metric.cell(c,derived[c.appId],period);
 return(0,jsx.jsxs)("td",{className:"cursor-pointer px-4 py-2 text-right hover:bg-sky-50",onClick:function(){onSource({metric:metric.label,app:c.name,text:metric.source})},children:[
 (0,jsx.jsx)("span",{className:cell.rag?RAG_CLASS[cell.rag]:"text-slate-800",children:cell.text}),
 cell.sub&&(0,jsx.jsx)("span",{className:"block text-xs text-slate-400",children:cell.sub})]},c.appId)})]},metric.label)})]})}
-function rollupMetric(metric,configs,derived){
-var texts=configs.map(function(c){return metric.cell(c,derived[c.appId]).text});
+function rollupMetric(metric,configs,derived,period){
+if(metric.noRollup)return{text:""};
+var texts=configs.map(function(c){return metric.cell(c,derived[c.appId],period).text});
 var first=void 0===texts[0]?"":texts[0];
 if(/20\d\d/.test(first)||/FP-based|Hour-based|IFPUG|Nesma|COSMIC|EFS|n\/a/.test(first))return{text:""};
 var nums=texts.map(parseNum).filter(function(n){return null!==n});
@@ -199,4 +167,4 @@ return(0,jsx.jsxs)("div",{className:"mt-4 flex flex-wrap items-center gap-5 text
 (0,jsx.jsxs)("span",{className:"flex items-center gap-1",children:[(0,jsx.jsx)("i",{className:"inline-block h-2.5 w-2.5 rounded-full bg-warn"})," watch"]}),
 (0,jsx.jsxs)("span",{className:"flex items-center gap-1",children:[(0,jsx.jsx)("i",{className:"inline-block h-2.5 w-2.5 rounded-full bg-bad"})," off target"]}),
 (0,jsx.jsx)("span",{className:"ml-4",children:note}),
-(0,jsx.jsx)("span",{children:"Thresholds are owner-configurable per category (Configuration)."})]})}}},function(e){e.O(0,[29,620,971,117,744],function(){return e(e.s=1113)}),_N_E=e.O()}]);
+(0,jsx.jsx)("span",{children:"Every metric is tagged with what it is measured against: agreed at baseline, to date, moved in the selected period, or forecast at completion. Thresholds are owner-configurable per category (Configuration)."})]})}}},function(e){e.O(0,[29,620,971,117,744],function(){return e(e.s=1113)}),_N_E=e.O()}]);
