@@ -134,9 +134,8 @@ el.removeEventListener("dragstart",onDragStart);el.removeEventListener("scroll",
 var derived=(0,React.useMemo)(function(){var map={};return configs.forEach(function(c){map[c.appId]=F.W$(c,rows)}),map},[configs,rows]);
 var toggle=function(key){setCollapsed(function(prev){var next=Object.assign({},prev);return next[key]=!prev[key],next})};
 return(0,jsx.jsxs)("div",{className:"jsx-448d443c98f438e mx-auto max-w-7xl px-6 py-8",children:[
-(0,jsx.jsx)("h1",{className:"jsx-448d443c98f438e mb-1 text-2xl font-extrabold text-core-navy",children:"Software Delivery Dashboard"}),
-(0,jsx.jsx)("p",{className:"jsx-448d443c98f438e mb-5 text-sm text-slate-500",children:"Scope, quality, time and cost across critical applications."}),
-(0,jsx.jsxs)("div",{className:"jsx-448d443c98f438e mb-4 flex flex-wrap items-end gap-4 rounded-xl border border-slate-200 bg-white p-4",children:[
+(0,jsx.jsx)("h1",{className:"jsx-448d443c98f438e sr-only",children:"Software Delivery Dashboard"}),
+(0,jsx.jsxs)("div",{className:"jsx-448d443c98f438e mb-4 flex flex-wrap items-end gap-4",children:[
 (0,jsx.jsx)(Field,{label:"Level",children:(0,jsx.jsx)("select",{value:level,onChange:function(e){setLevel(e.target.value)},className:"jsx-448d443c98f438e input",children:D.HJ.map(function(l){return (0,jsx.jsx)("option",{value:l,className:"jsx-448d443c98f438e",children:l},l)})})}),
 (0,jsx.jsx)(Field,{label:"Period",children:(0,jsx.jsx)("select",{value:period,onChange:function(e){setPeriod(e.target.value)},className:"jsx-448d443c98f438e input",children:D.PR.map(function(x){return (0,jsx.jsx)("option",{className:"jsx-448d443c98f438e",children:x},x)})})}),
 (0,jsx.jsx)(Field,{label:"Data",children:(0,jsx.jsxs)("button",{type:"button","aria-pressed":"period"===view?"true":"false",onClick:function(){setView("period"===view?"completion":"period")},className:"jsx-448d443c98f438e "+("btn btn-icon "+("period"===view?"btn-on":"")),children:[(0,jsx.jsx)("svg",{width:"12",height:"12",viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:"2.2",strokeLinejoin:"round","aria-hidden":"true",className:"jsx-448d443c98f438e",children:(0,jsx.jsx)("path",{d:"M12 4 3 20h18z",className:"jsx-448d443c98f438e"})}),"View delta"]})}),
