@@ -27,7 +27,7 @@ var DSEP="\u0001";
 var NOCMP="\u2013";
 function wd(value,delta){return delta?value+DSEP+delta:value}
 function sNum(v){return sg(v)+v}
-function sNum1(v){return sg(v)+fixed1(v)}
+function sNum1(v){var r=Math.round(10*v)/10;return 0===r?"0":sg(r)+r.toFixed(1)}
 function sFull(v){return(v<0?"-":v>0?"+":"")+F.M1(abs(v))}
 function before(c,d,period){var h=F.hy(c,period),fp=h.deliveredFp||0,wk=weeksIn(period),w=c.weeksElapsed-wk,f=d.deliveredFp-fp;return w<=0||f<=0?null:{weeks:w,fp:f,hours:c.hoursToDate*(1-h.spendShare),spend:d.actuals*(1-h.spendShare)}}
 function sPts(v){return sg(v)+v+" "+unit(v,"pt","pts")}
@@ -158,7 +158,7 @@ source&&(0,jsx.jsx)("div",{onClick:function(){setSource(null)},className:"jsx-44
 (0,jsx.jsx)(SJ(),{id:"448d443c98f438e",children:".btn.jsx-448d443c98f438e{border:1px solid var(--v-border);border-radius:8px;padding:7px 12px;font-size:13px;background:var(--v-surface);color:var(--v-t3);font-weight:500}.btn-on.jsx-448d443c98f438e{background:var(--v-brand);color:var(--v-onbrand);border-color:var(--v-brand)}"})]})}
 function Value(props){var cell=props.cell,parts=String(cell.text).split(DSEP);
 return(0,jsx.jsxs)("span",{className:"whitespace-nowrap "+(cell.rag?RAG_CLASS[cell.rag]:props.plain),children:[parts[0],
-parts[1]?(0,jsx.jsx)("span",{className:"ml-1 font-normal "+(cell.deltaRag?DELTA_CLASS[cell.deltaRag]:"text-slate-400"),children:"("+parts[1]+")"}):null]})}
+parts[1]?(0,jsx.jsx)("span",{className:"ml-1 font-normal text-slate-400",children:"("+parts[1]+")"}):null]})}
 function Field(props){return(0,jsx.jsxs)("div",{className:"flex flex-col gap-1",children:[(0,jsx.jsx)("span",{className:"text-xs font-medium text-slate-500",children:props.label}),props.children]})}
 function HeadCell(props){var cell=props.cell;return(0,jsx.jsxs)("div",{className:"text-right",children:[
 (0,jsx.jsx)("span",{className:"block whitespace-nowrap text-base",children:(0,jsx.jsx)(Value,{cell:cell,plain:"font-bold text-core-navy"})}),
