@@ -1,4 +1,49 @@
-(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[185],{9030:function(e,t,i){Promise.resolve().then(i.t.bind(i,7960,23)),Promise.resolve().then(i.bind(i,9835)),Promise.resolve().then(i.t.bind(i,2972,23))},1930:function(__mod__,t,__wr__){"use strict";__wr__.d(t,{CR:function(){return defaultChangeRules},CT:function(){return CHANGE_TYPES},HJ:function(){return LEVELS},PR:function(){return PERIODS},QP:function(){return PRICE_BOOK},R6:function(){return SEED_ROWS},Uj:function(){return rowCost},c3:function(){return TODAY},cf:function(){return changeFactor},it:function(){return SEED_CONFIGS},mS:function(){return fpWeight}});
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[620],{2369:function(__mod__,t,__wr__){__wr__.d(t,{G$:function(){return fmtDate},I:function(){return gradeRank},M1:function(){return euroFull},W$:function(){return derive},b9:function(){return grade},gF:function(){return gradeFloor},hy:function(){return historyFor},pP:function(){return signedPct},qN:function(){return signed},s7:function(){return euro},sd:function(){return signedFixed},wq:function(){return rag}});var D=__wr__(1930);
+var DAY=864e5;
+var GRADE_FLOOR={A:90,B:80,C:70,D:60,E:0};
+var EMPTY_HISTORY={better:0,happier:0,slackDays:0,spendShare:0};
+function rag(value,threshold){var green=threshold.green,amber=threshold.amber;return threshold.invert?value<=green?"good":value<=amber?"warn":"bad":value>=green?"good":value>=amber?"warn":"bad"}
+function grade(score){return score>=90?"A":score>=80?"B":score>=70?"C":score>=60?"D":"E"}
+function gradeRank(g){var r={A:5,B:4,C:3,D:2,E:1}[g];return void 0===r?0:r}
+function gradeFloor(g){var f=GRADE_FLOOR[g];return void 0===f?90:f}
+function historyFor(config,period){var h=config&&config.history&&config.history[period];return h||EMPTY_HISTORY}
+function euro(v){return Math.abs(v)>=1e6?"€"+(v/1e6).toFixed(2)+"M":Math.abs(v)>=1e3?"€"+(v/1e3).toFixed(0)+"K":"€"+v.toFixed(0)}
+function euroFull(v){return"€"+Math.round(v).toLocaleString("en-US")}
+function fmtDate(v){return new Date(Date.parse(v)).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"})}
+function signed(v){var suffix=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"";return(v>0?"+":"")+v.toLocaleString("en-US")+suffix}
+function signedFixed(v,digits){var suffix=arguments.length>2&&void 0!==arguments[2]?arguments[2]:"";return(v>0?"+":"")+v.toFixed(digits)+suffix}
+function signedPct(value,base){var b=Math.abs(base);if(!isFinite(b)||0===b)return"n/a";var p=Math.round(value/b*100);return(p>0?"+":"")+p+"%"}
+function derive(config,allRows){
+var rows=allRows.filter(function(r){return r.appId===config.appId});
+var live=rows.filter(function(r){return"Deleted"!==r.changeType});
+var deleted=rows.filter(function(r){return"Deleted"===r.changeType});
+var liveDone=live.filter(function(r){return"Deployed"===r.status});
+var liveOpen=live.filter(function(r){return"Deployed"!==r.status});
+var sumFp=function(list){return list.reduce(function(a,r){return a+r.fp},0)};
+var totalFp=sumFp(live),deliveredFp=sumFp(liveDone),remainingFp=sumFp(liveOpen),deletedFp=sumFp(deleted);
+var throughput=config.weeksElapsed>0?deliveredFp/config.weeksElapsed:0;
+var productivity=deliveredFp>0?config.hoursToDate/deliveredFp:0;
+var runRate=(throughput+config.expectedThroughput)/2||config.expectedThroughput;
+var weeksLeft=runRate>0?remainingFp/runRate:999;
+var forecastDate=new Date(Date.parse(D.c3)+7*weeksLeft*DAY).toISOString().slice(0,10);
+var forecastSlackDays=Math.round((Date.parse(config.baselineDeadline)-Date.parse(forecastDate))/DAY);
+var startMs=config.baselineStart?Date.parse(config.baselineStart):Date.parse(D.c3)-config.weeksElapsed*7*DAY;
+var plannedDays=Math.max(1,Math.round((Date.parse(config.baselineDeadline)-startMs)/DAY));
+var costDone=rows.filter(function(r){return"Deployed"===r.status});
+var costOpen=rows.filter(function(r){return"Deployed"!==r.status});
+var actuals,etc;
+if("fp"===config.contractType){
+actuals=costDone.reduce(function(a,r){return a+r.cost},0);
+etc=costOpen.reduce(function(a,r){return a+r.cost},0)}
+else{
+actuals=config.hoursToDate*config.ratePerHour;
+etc=costOpen.reduce(function(a,r){return a+config.effortHoursByComplexity[r.complexity]*config.ratePerHour*D.cf(config.changeRules,r.changeType,r.changePct)},0)}
+var eac=actuals+etc;
+var costPerFp=deliveredFp>0?actuals/deliveredFp:0;
+var vacCost=config.baselineBudget-eac;
+var betterScore=Math.round((config.better.security+config.better.maintainability+config.better.reliability+config.better.efficiency+config.better.functionalSuitability)/5);
+var happierScore=Math.round((config.happier.team+config.happier.collaboration+config.happier.usage)/3*10)/10;
+return{totalFp:totalFp,deliveredFp:deliveredFp,remainingFp:remainingFp,deletedFp:deletedFp,throughput:Math.round(10*throughput)/10,deliverySpeed:Math.round(2*throughput*10)/10,productivity:Math.round(10*productivity)/10,forecastDate:forecastDate,forecastSlackDays:forecastSlackDays,plannedDays:plannedDays,actuals:actuals,etc:etc,eac:eac,costPerFp:Math.round(costPerFp),vacCost:vacCost,vacTimeDays:forecastSlackDays,scopeEac:totalFp,scopeGrowth:totalFp-config.baselineScopeFp,betterScore:betterScore,happierScore:happierScore}}},1930:function(__mod__,t,__wr__){__wr__.d(t,{CR:function(){return defaultChangeRules},CT:function(){return CHANGE_TYPES},HJ:function(){return LEVELS},PR:function(){return PERIODS},QP:function(){return PRICE_BOOK},R6:function(){return SEED_ROWS},Uj:function(){return rowCost},c3:function(){return TODAY},cf:function(){return changeFactor},it:function(){return SEED_CONFIGS},mS:function(){return fpWeight}});
 var TODAY="2026-06-27";
 var LEVELS=["LSTO","BPSO","Airside"];
 var PERIODS=["Last Month","Last Quarter","Last PI","YTD"];
@@ -53,7 +98,7 @@ var SEED_CONFIGS=APPS.map(function(app){
 var rows=SEED_ROWS.filter(function(r){return r.appId===app.appId});
 var fp=rows.filter(function(r){return"Deleted"!==r.changeType}).reduce(function(a,r){return a+r.fp},0);
 var cost=modelCost(app,rows);
-return{appId:app.appId,name:app.name,fullName:app.fullName,orgUnit:app.orgUnit,qualityTarget:"A",owner:app.owner,contractType:app.contractType,fpMethod:"IFPUG",ratePerHour:app.ratePerHour,hoursToDate:app.hoursToDate,expectedThroughput:app.expectedThroughput,weeksElapsed:app.weeksElapsed,baselineBudget:1e3*Math.round(cost*app.budgetFactor/1e3),baselineDeadline:app.baselineDeadline,baselineStart:app.baselineStart,baselineScopeFp:Math.round(fp*app.scopeFactor),priceBook:Object.assign({},PRICE_BOOK),outputTariff:PRICE_BOOK.High,effortHoursByComplexity:Object.assign({},EFFORT_HOURS),changeRules:defaultChangeRules(),thresholds:defaultThresholds(),history:app.history,overview:app.overview,better:app.better,happier:app.happier}})},9835:function(__mod__,t,__wr__){"use strict";__wr__.d(t,{StoreProvider:function(){return StoreProvider},V:function(){return CURRENT_USER},o:function(){return useStore}});var jsx=__wr__(7437),React=__wr__(2265),D=__wr__(1930);
+return{appId:app.appId,name:app.name,fullName:app.fullName,orgUnit:app.orgUnit,qualityTarget:"A",owner:app.owner,contractType:app.contractType,fpMethod:"IFPUG",ratePerHour:app.ratePerHour,hoursToDate:app.hoursToDate,expectedThroughput:app.expectedThroughput,weeksElapsed:app.weeksElapsed,baselineBudget:1e3*Math.round(cost*app.budgetFactor/1e3),baselineDeadline:app.baselineDeadline,baselineStart:app.baselineStart,baselineScopeFp:Math.round(fp*app.scopeFactor),priceBook:Object.assign({},PRICE_BOOK),outputTariff:PRICE_BOOK.High,effortHoursByComplexity:Object.assign({},EFFORT_HOURS),changeRules:defaultChangeRules(),thresholds:defaultThresholds(),history:app.history,overview:app.overview,better:app.better,happier:app.happier}})},9835:function(__mod__,t,__wr__){__wr__.d(t,{StoreProvider:function(){return StoreProvider},V:function(){return CURRENT_USER},o:function(){return useStore}});var jsx=__wr__(7437),React=__wr__(2265),D=__wr__(1930);
 var STORAGE_KEY="core4-state-v2";
 var CURRENT_USER="owner";
 var Ctx=(0,React.createContext)(null);
@@ -83,6 +128,29 @@ opts.forEach(function(b){b.addEventListener("click",onClick)});
 function onSystem(){if("system"===read())paint("system")}
 mq&&mq.addEventListener&&mq.addEventListener("change",onSystem);
 return function(){opts.forEach(function(b){b.removeEventListener("click",onClick)});mq&&mq.removeEventListener&&mq.removeEventListener("change",onSystem)}
+},[]);
+(0,React.useEffect)(function(){
+var footer=document.querySelector("body > footer");
+if(!footer)return;
+var body=document.body,root=document.documentElement,frame=0,height=-1;
+function atEnd(){return root.scrollHeight-(window.scrollY+window.innerHeight)<=2}
+function sync(){
+frame=0;
+var h=footer.offsetHeight;
+if(h!==height){height=h;root.style.setProperty("--footer-h",h+"px")}
+body.classList.toggle("footer-landed",atEnd())}
+function schedule(){if(!frame)frame=requestAnimationFrame(sync)}
+sync();
+window.addEventListener("scroll",schedule,{passive:!0});
+window.addEventListener("resize",schedule);
+var ro=window.ResizeObserver?new ResizeObserver(schedule):null;
+ro&&ro.observe(body);
+return function(){
+frame&&cancelAnimationFrame(frame);
+window.removeEventListener("scroll",schedule);
+window.removeEventListener("resize",schedule);
+ro&&ro.disconnect();
+body.classList.remove("footer-landed")}
 },[]);
 (0,React.useEffect)(function(){try{var saved=localStorage.getItem(STORAGE_KEY);saved&&setState(JSON.parse(saved))}catch(e){}setReady(!0)},[]);
 (0,React.useEffect)(function(){if(ready)try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){}},[state,ready]);
@@ -140,4 +208,4 @@ return Object.assign({},prev,{configs:configs,audit:log.concat(prev.audit)})})},
 var reset=(0,React.useCallback)(function(){setState(initialState())},[]);
 var value=(0,React.useMemo)(function(){return Object.assign({},state,{ready:ready,updateRow:updateRow,addRow:addRow,deleteRow:deleteRow,uploadRows:uploadRows,recalcCosts:recalcCosts,updateConfig:updateConfig,reset:reset})},[state,ready,updateRow,addRow,deleteRow,uploadRows,recalcCosts,updateConfig,reset]);
 return(0,jsx.jsx)(Ctx.Provider,{value:value,children:children})}
-function useStore(){var ctx=(0,React.useContext)(Ctx);if(!ctx)throw Error("useStore must be used within StoreProvider");return ctx}},7960:function(){}},function(e){e.O(0,[587,972,971,117,744],function(){return e(e.s=9030)}),_N_E=e.O()}]);
+function useStore(){var ctx=(0,React.useContext)(Ctx);if(!ctx)throw Error("useStore must be used within StoreProvider");return ctx}}}]);
